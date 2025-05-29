@@ -5,9 +5,9 @@ name = "pypi"
 
 [packages]
 flask = "==2.3.3"
-flask-cors = "==4.0.0"
 werkzeug = "==2.3.7"
 click = "==8.1.7"
+flask-cors = "*"
 
 [dev-packages]
 pytest = "==7.4.0"
