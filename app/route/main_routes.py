@@ -1,5 +1,7 @@
-from flask import render_template
+from flask import render_template, request, redirect
 from app.route import main_bp
+from app.service.user_service import get_user_by_username, verify_password
+
 
 @main_bp.route('/')
 def login_page():
