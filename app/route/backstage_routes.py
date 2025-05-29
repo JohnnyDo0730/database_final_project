@@ -1,7 +1,66 @@
 from flask import render_template
 from app.route import backstage_bp
 
+''' 後台頁面模板 '''
 @backstage_bp.route('/backstage')
 def backstage_page():
-    """後台頁面"""
     return render_template('backstage.html')
+
+''' 後台頁面子頁 '''
+#後台書籍頁面
+@backstage_bp.route('/backstage/book')
+def backstage_book_page():
+    return render_template('backstage_book.html')
+
+#後台採購購物車頁面
+@backstage_bp.route('/backstage/purchase_cart')
+def backstage_purchase_cart_page():
+    return render_template('backstage_purchase_cart.html')
+
+#後台退貨頁面
+@backstage_bp.route('/backstage/return')
+def backstage_return_page():
+    return render_template('backstage_return.html')
+
+#後台補貨頁面
+@backstage_bp.route('/backstage/reorder')
+def backstage_reorder_page():
+    return render_template('backstage_reorder.html')
+
+#後台採購紀錄頁面
+@backstage_bp.route('/backstage/purchase_record')
+def backstage_purchase_record_page():
+    return render_template('backstage_purchase_record.html')
+
+
+''' 後台頁面功能 '''
+#書籍頁:搜尋
+@backstage_bp.route('/backstage/book/search', methods=['POST'])
+
+
+#書籍頁:加入購物車
+@backstage_bp.route('/backstage/book/add_to_cart', methods=['POST'])
+
+
+#購物車頁:送出訂單
+@backstage_bp.route('/backstage/purchase_cart/submit', methods=['POST'])
+
+
+#購物車頁:商品移除購物車
+@backstage_bp.route('/backstage/purchase_cart/remove', methods=['POST'])
+
+
+#退貨頁:同意退貨
+@backstage_bp.route('/backstage/return/confirm', methods=['POST'])
+
+
+#退貨頁:拒絕退貨
+@backstage_bp.route('/backstage/return/reject', methods=['POST'])
+
+
+#補貨頁:加入購物車
+@backstage_bp.route('/backstage/reorder/add_to_cart', methods=['POST'])
+
+
+#採購紀錄頁:簽收
+@backstage_bp.route('/backstage/purchase_record/sign', methods=['POST'])

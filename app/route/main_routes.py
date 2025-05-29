@@ -25,3 +25,18 @@ def login():
         elif user['user_type'] == 'staff':
             return redirect('/backstage')
     return render_template('login.html')
+
+@main_bp.route('/register', methods=['POST'])
+def register():
+    """註冊"""
+    username = request.form['username']
+    password = request.form['password']
+    user_type = request.form['user_type']
+    if user_type == 'customer':
+        email = request.form['email']
+        address = request.form['address']
+        user_id = create_user(username, password, user_type, email, address)
+    elif user_type == 'staff':
+        user_id = create_user(username, password, user_type)
+    return redirect('/')
+
