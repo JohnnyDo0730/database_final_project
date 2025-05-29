@@ -2,51 +2,82 @@
 
 這是我們的資料庫期末專案，包含初始化環境步驟、Git 使用流程與命名規則等說明。
 
-## 📦 專案初始化
+## 📋 專案架構
 
-### 1. 初次 Push（首次建立 GitHub 倉庫後）
+```
+project/
+│
+├── app/                        # 應用程式主目錄
+│   ├── __init__.py             # 應用程式初始化
+│   ├── data/                   # 資料相關檔案
+│   ├── modules/                # 功能模組
+│   ├── route/                  # 路由控制
+│   │   ├── __init__.py         # 路由初始化
+│   │   └── main_routes.py      # 主要頁面路由
+│   ├── service/                # 服務層
+│   │   └── __init__.py         # 服務層初始化
+│   ├── static/                 # 靜態檔案
+│   │   ├── css/                # CSS 樣式表
+│   │   └── js/                 # JavaScript 檔案
+│   ├── templates/              # HTML 模板
+│   │   ├── login.html          # 登入頁面
+│   │   ├── customer_base.html  # 客戶端基本模板
+│   │   └── backstage_base.html # 後台基本模板
+│   └── util/                   # 工具函數
+│       └── db.py               # 資料庫連接工具
+│
+├── run.py                      # 應用程式入口點
+├── Pipfile                     # 依賴管理
+├── Pipfile.lock                # 依賴版本鎖定
+└── Readme.md                   # 專案說明文件
+```
+
+## 🚀 快速開始
+
+### 補充說明
+- 私人檔案(沒有要上傳的)，請放在project_root/self裡面
+- 其他不想上傳的檔案可在.gitignore中新增路徑來自動忽略
+
+### 環境需求
+
+- Python 3.12
+- pipenv (用於管理虛擬環境和依賴)
+
+### 安裝步驟
+
+1. 複製專案到本地
 
 ```bash
 git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/JohnnyDo0730/database_final_project.git
-git push -u origin main
+git remote add origin https://github.com/JohnnyDo0730/Image-Inpainting.git
+git pull origin main
 ```
 
----
-
-## 🐍 Python 環境管理（使用 pipenv）
-
-### 初始化虛擬環境
+2. 安裝依賴
 
 ```bash
+pip install pipenv
 pipenv install
 ```
 
-### 進入虛擬環境
+3. 啟動虛擬環境
 
 ```bash
 pipenv shell
 ```
 
-### 安裝套件並自動記錄到 Pipfile
+4. 啟動應用程式
 
 ```bash
-pipenv install package_name
+python run.py
 ```
 
-### 退出虛擬環境
+應用程式將在 http://localhost:5000 啟動
+
+5. 退出虛擬環境
 
 ```bash
 exit
-```
-
-### 匯出套件清單
-
-```bash
-pipenv requirements > requirements.txt
 ```
 
 ---
@@ -62,59 +93,27 @@ git pull origin main
 ### 新增或更新檔案後，將變更提交與上傳
 
 ```bash
+git checkout -b feature/some-feature-name
 git add .
 git commit -m "簡要說明本次變更"
-git push origin branch_name
+git push origin feature/some-feature-name
 ```
-
-> ⛔ **請勿跳過 commit 步驟直接 push**
 
 ---
 🌿 分支命名原則
 請依據用途建立分支，建議格式如下：
 
-類型	命名範例	說明
-功能	feature/login-system	新增功能
-修復	fix/login-bug	修正錯誤
-重構	refactor/db-structure	調整架構或重構
-文件	docs/update-readme	修改說明文件
-測試	test/db-connection	測試功能相關
+| 類型 | 命名範例                    | 說明      |
+| -- | ----------------------- | ------- |
+| 功能 | `feature/login-system`  | 新增功能    |
+| 修復 | `fix/login-bug`         | 修正錯誤    |
+| 重構 | `refactor/db-structure` | 調整架構或重構 |
+| 文件 | `docs/update-readme`    | 修改說明文件  |
+| 測試 | `test/db-connection`    | 測試功能相關  |
 
-建立新分支範例：
-
-```bash
-git checkout -b feature/some-feature-name
-```
-
-💡 一次完整工作流程範例
-從 main 更新並建立新功能分支
-
-```bash
-git checkout main
-git pull origin main
-git checkout -b feature/login-api
-進行開發與測試...
-```
-
-提交與推送分支
-
-```bash
-git add .
-git commit -m "add login API and validation"
-git checkout -b feature/login-api
-git push origin feature/login-api
-進 GitHub 建立 Pull Request，指向 main
-```
-由自己或組員審查並合併
-
-合併後可刪除該分支
-```bash
-git branch -d feature/login-api          # 本地刪除
-git push origin --delete feature/login-api  # 遠端刪除
-```
 ---
 
-## ✏️ Commit 命名建議
+ ✏️ Commit 命名建議
 
 請用簡潔明確的方式命名 commit 訊息，例如：
 
@@ -125,3 +124,20 @@ git push origin --delete feature/login-api  # 遠端刪除
 * `docs: update README.md`
 
 ---
+
+## 🔧 技術架構
+
+- **前端**：HTML、CSS、JavaScript
+- **後端**：Python、Flask
+- **資料庫**：MySQL (目前未實際連接)
+- **環境管理**：pipenv
+
+## 📝 開發注意事項
+
+1. 目前專案處於基本架構階段，尚未實作具體功能
+2. 資料庫連接功能已準備但被註解，需要時可取消註解
+3. 開發新功能時，請遵循以下步驟：
+   - 創建新分支
+   - 在適當目錄下添加功能模組
+   - 更新相關路由
+   - 提交變更並發起 Pull Request
