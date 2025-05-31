@@ -160,37 +160,12 @@ function handleLogout() {
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.disabled = true;
-        const originalText = logoutBtn.textContent;
         logoutBtn.textContent = '登出中...';
     }
     
-    // 發送登出請求
-    fetch('/logout', {
-        method: 'POST',
-        credentials: 'include'
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log('登出成功，即將跳轉');
-            window.location.href = '/login';
-        } else {
-            console.log('登出失敗');
-            alert('登出失敗');
-            // 恢復按鈕狀態
-            if (logoutBtn) {
-                logoutBtn.disabled = false;
-                logoutBtn.textContent = originalText;
-            }
-        }
-    })
-    .catch(error => {
-        console.error('登出錯誤:', error);
-        alert('登出過程發生錯誤');
-        // 恢復按鈕狀態
-        if (logoutBtn) {
-            logoutBtn.disabled = false;
-            logoutBtn.textContent = originalText;
-        }
-    });
+    // 直接導航到登出頁面
+    console.log('直接導航到登出頁面');
+    window.location.href = '/logout';
+    
+    // 不再使用 fetch 請求，改為直接導航
 }
