@@ -66,10 +66,10 @@ pipenv install
 pipenv shell
 ```
 
-4. 啟動應用程式
+4. 啟動應用程式（強制使用當前虛擬環境執行）
 
 ```bash
-python run.py
+pipenv run python run.py
 ```
 
 應用程式將在 http://localhost:5000 啟動
