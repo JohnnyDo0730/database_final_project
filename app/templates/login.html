@@ -116,6 +116,20 @@
             
             // 更新隱藏欄位的值
             document.getElementById('user-type').value = role;
+            
+            // 根據角色自動填入預設使用者資訊
+            if (role === 'customer') {
+                document.getElementById('username').value = 'customer';
+                document.getElementById('password').value = 'customer123';
+            } else if (role === 'staff') {
+                document.getElementById('username').value = 'staff';
+                document.getElementById('password').value = 'staff123';
+            }
+        }
+
+        // 頁面載入時自動填入買家的預設資訊
+        window.onload = function() {
+            selectRole('customer');
         }
     </script>
 </body>
