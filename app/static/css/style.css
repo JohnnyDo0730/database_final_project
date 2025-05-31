@@ -1,1 +1,111 @@
 
+/* 基本重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 頂部導航欄樣式 */
+header {
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+#logout-btn {
+    padding: 0.5rem 1rem;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 側邊導航欄樣式 */
+.sidebar {
+    background-color: #f8f9fa;
+    width: 250px;
+    position: fixed;
+    top: 60px; /* 頂部導航欄的高度 */
+    left: 0;
+    bottom: 0;
+    padding: 1rem;
+    border-right: 1px solid #dee2e6;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    margin-bottom: 0.5rem;
+}
+
+.nav-item {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nav-item:hover {
+    background-color: #e9ecef;
+}
+
+.nav-item.active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* 主要內容區域樣式 */
+main {
+    margin-left: 250px; /* 側邊欄寬度 */
+    margin-top: 60px; /* 頂部導航欄高度 */
+    padding: 2rem;
+    flex: 1;
+}
+
+#content {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* 載入中提示樣式 */
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}

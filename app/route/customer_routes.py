@@ -4,8 +4,7 @@ from app.route import customer_bp
 ''' 客戶頁面模板 '''
 @customer_bp.route('/customer')
 def customer_page():
-    """客戶頁面"""
-    return render_template('customer.html')
+    return render_template('customer_base.html')
 
 ''' 客戶頁面子頁 '''
 #客戶書籍頁面
@@ -22,6 +21,11 @@ def customer_cart_page():
 @customer_bp.route('/customer/order_record')
 def customer_order_record_page():
     return render_template('customer_order_record.html')
+
+#客戶個人資料頁面
+@customer_bp.route('/customer/profile')
+def customer_profile_page():
+    return render_template('customer_profile.html')
 
 
 ''' 客戶頁面功能 '''

@@ -4,7 +4,7 @@ from app.route import backstage_bp
 ''' 後台頁面模板 '''
 @backstage_bp.route('/backstage')
 def backstage_page():
-    return render_template('backstage.html')
+    return render_template('backstage_base.html')
 
 ''' 後台頁面子頁 '''
 #後台書籍頁面
