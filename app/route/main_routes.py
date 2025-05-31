@@ -30,16 +30,32 @@ def register_page():
 # 測試登入
 def login():
     """登入"""
-    # 取得使用者選擇的身份類型
+    # 取得使用者選擇的身份類型和登入資訊
     user_type = request.form['user_type']
+    username = request.form['username']
+    password = request.form['password']
     
-    # 直接根據身份類型跳轉，不檢查使用者名稱和密碼
-    if user_type == 'customer':
-        return redirect('/customer')
-    elif user_type == 'staff':
-        return redirect('/backstage')
+    # 檢查是否為預設使用者
+    is_default_user = False
+    if (user_type == 'customer' and username == 'customer' and password == 'customer123') or \
+       (user_type == 'staff' and username == 'staff' and password == 'staff123'):
+        is_default_user = True
     
-    # 若有問題，回到登入頁面
+    # 如果不是預設使用者，則檢查資料庫
+    is_valid_user = False
+    if not is_default_user:
+        user = get_user_by_username(username)
+        if user and verify_password(user, password) and user['user_type'] == user_type:
+            is_valid_user = True
+    
+    # 如果是預設使用者或資料庫中的有效使用者，則跳轉到相應頁面
+    if is_default_user or is_valid_user:
+        if user_type == 'customer':
+            return redirect('/customer')
+        elif user_type == 'staff':
+            return redirect('/backstage')
+    
+    # 若驗證失敗，回到登入頁面
     return render_template('login.html')
 
 @main_bp.route('/logout', methods=['GET', 'POST'])
