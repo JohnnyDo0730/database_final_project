@@ -22,7 +22,7 @@
             <span id="customer-name">顧客名稱</span>
         </div>
         <div class="header-right">
-            <button id="logout-btn">登出</button>
+            <button class="logout-btn" id="logout-btn">登出</button>
         </div>
     </header>
 
@@ -30,7 +30,7 @@
     <nav class="sidebar">
         <ul>
             <li>
-                <button class="nav-item" data-page="book">書店瀏覽</button>
+                <button class="nav-item" data-page="store">書店瀏覽</button>
             </li>
             <li>
                 <button class="nav-item" data-page="cart">購物車</button>
@@ -54,10 +54,10 @@
     <!-- 引入JS -->
     {% if request is defined and request.host.startswith('localhost:5000') %}
         <!-- Flask 環境 -->
-        <script src="{{ url_for('static', filename='js/customer.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/customer_base.js') }}"></script>
     {% else %}
         <!-- Live Server 環境 -->
-        <script src="../static/js/customer.js"></script>
+        <script src="../static/js/customer_base.js"></script>
     {% endif %}
 </body>
 </html>

@@ -1,4 +1,3 @@
-
 /* 基本重置 */
 * {
     margin: 0;
@@ -26,6 +25,7 @@ header {
     left: 0;
     right: 0;
     z-index: 1000;
+    height: 60px; /* 固定頂欄高度 */
 }
 
 .header-left {
@@ -34,12 +34,18 @@ header {
     gap: 1rem;
 }
 
+.header-left h1 {
+    font-size: 1.5rem; /* 標準化標題大小 */
+    white-space: nowrap; /* 防止標題換行 */
+    min-width: 120px; /* 為標題設置最小寬度 */
+}
+
 .header-right {
     display: flex;
     align-items: center;
 }
 
-#logout-btn {
+#logout-btn, .logout-btn {
     padding: 0.5rem 1rem;
     background-color: #dc3545;
     color: white;

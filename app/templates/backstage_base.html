@@ -22,7 +22,7 @@
             <span id="employee-name">員工名稱</span>
         </div>
         <div class="header-right">
-            <button id="logout-btn">登出</button>
+            <button class="logout-btn" id="logout-btn">登出</button>
         </div>
     </header>
 
@@ -57,10 +57,10 @@
     <!-- 引入JS -->
     {% if request is defined and request.host.startswith('localhost:5000') %}
         <!-- Flask 環境 -->
-        <script src="{{ url_for('static', filename='js/backstage.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/backstage_base.js') }}"></script>
     {% else %}
         <!-- Live Server 環境 -->
-        <script src="../static/js/backstage.js"></script>
+        <script src="../static/js/backstage_base.js"></script>
     {% endif %}
 </body>
 </html>
