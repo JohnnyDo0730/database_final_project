@@ -1,0 +1,22 @@
+{% extends "customer_base.html" %}
+
+{% block content %}
+<div class="store-page">
+    <h1>書店瀏覽</h1>
+    <!-- 頁面內容將在這裡 -->
+</div>
+
+<!-- 引入特定頁面的 CSS -->
+{% if request is defined and request.host.startswith('localhost:5000') %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/customer/store.css') }}">
+{% else %}
+    <link rel="stylesheet" href="../../static/css/customer/store.css">
+{% endif %}
+
+<!-- 引入特定頁面的 JS -->
+{% if request is defined and request.host.startswith('localhost:5000') %}
+    <script src="{{ url_for('static', filename='js/customer/store.js') }}"></script>
+{% else %}
+    <script src="../../static/js/customer/store.js"></script>
+{% endif %}
+{% endblock %} 

@@ -1,1 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>後台管理系統</title>
+    
+    <!-- 使用條件判斷來決定使用哪種路徑 -->
+    {% if request is defined and request.host.startswith('localhost:5000') %}
+        <!-- Flask 環境 -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% else %}
+        <!-- Live Server 環境 -->
+        <link rel="stylesheet" href="../static/css/style.css">
+    {% endif %}
+</head>
+<body>
+    <!-- 頂部導航欄 -->
+    <header>
+        <div class="header-left">
+            <h1>Backstage</h1>
+            <span id="employee-name">員工名稱</span>
+        </div>
+        <div class="header-right">
+            <button class="logout-btn" id="logout-btn">登出</button>
+        </div>
+    </header>
 
+    <!-- 側邊導航欄 -->
+    <nav class="sidebar">
+        <ul>
+            <li>
+                <button class="nav-item" data-page="book">書籍管理</button>
+            </li>
+            <li>
+                <button class="nav-item" data-page="purchase_cart">購物車管理</button>
+            </li>
+            <li>
+                <button class="nav-item" data-page="return">退貨管理</button>
+            </li>
+            <li>
+                <button class="nav-item" data-page="reorder">補貨管理</button>
+            </li>
+            <li>
+                <button class="nav-item" data-page="purchase_record">採購記錄</button>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- 主要內容區域 -->
+    <main>
+        <div id="content">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- 引入JS -->
+    {% if request is defined and request.host.startswith('localhost:5000') %}
+        <!-- Flask 環境 -->
+        <script src="{{ url_for('static', filename='js/backstage_base.js') }}"></script>
+    {% else %}
+        <!-- Live Server 環境 -->
+        <script src="../static/js/backstage_base.js"></script>
+    {% endif %}
+</body>
+</html>
