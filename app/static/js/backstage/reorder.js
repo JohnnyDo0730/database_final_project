@@ -1,13 +1,25 @@
 // 補貨管理頁面 JavaScript
 
-// 定義全局初始化函數
-function initReorderPage() {
-    console.log('初始化補貨管理頁面');
-    // 補貨管理頁面的初始化邏輯
-    // 例如：載入補貨列表、設置事件監聽器等
+export function init() {
+    console.log('reorder.js 模組初始化');
+    // 綁定在容器上（比如整個子頁區塊）
+    const container = document.getElementById("reorder-page");
+    
+    if (!container) {
+        console.error('找不到 reorder-page 元素');
+        return;
+    }
+  
+    /*
+    container.addEventListener("click", function (event) {
+      const targetBtn = event.target.closest(".my-button");
+      if (targetBtn) {
+        console.log("你點擊了補貨管理頁面 的按鈕:", targetBtn.dataset.name);
+        // 呼叫該模組內的專屬函數
+        doSomething(targetBtn.dataset.name);
+      }
+    });
+    */
+    
+    console.log('reorder.js 事件監聽器已設置');
 }
-
-// 當頁面直接載入時執行初始化
-document.addEventListener('DOMContentLoaded', function() {
-    initReorderPage();
-}); 

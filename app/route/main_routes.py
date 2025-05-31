@@ -7,7 +7,7 @@ from app.service.user_service import get_user_by_username, verify_password
 def login_page():
     """首頁"""
     #return render_template('login.html')
-    return render_template('customer_base.html') # 測試用
+    return render_template('backstage_base.html') # 測試用
 
 @main_bp.route('/register')
 def register_page():

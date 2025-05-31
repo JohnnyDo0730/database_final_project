@@ -108,19 +108,21 @@ function loadPage(pageName) {
             }
             return response.text();
         })
-        .then(html => {
+        .then(async html => {
             // 更新頁面內容
             content.innerHTML = html;
             
             console.log('頁面內容已更新:', pageName);
             
-            /*
-            // 可選：調用頁面特定的初始化函數
-            const initFunctionName = `init${pageName.charAt(0).toUpperCase() + pageName.slice(1)}Page`;
-            if (window[initFunctionName] && typeof window[initFunctionName] === 'function') {
-                window[initFunctionName]();
+            // 修正動態導入路徑
+            try {
+                const pageModule = await import(`./backstage/${pageName}.js`);
+                if (typeof pageModule.init === 'function') {
+                    pageModule.init(); // 將監聽器綁到目前內嵌的子頁上
+                }
+            } catch (err) {
+                console.error(`無法載入模組 ./backstage/${pageName}.js:`, err);
             }
-            */
 
             updateSidebarState(pageName);
         })

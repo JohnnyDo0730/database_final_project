@@ -106,17 +106,20 @@ function loadPage(pageName) {
             }
             return response.text();
         })
-        .then(html => {
+        .then(async html => {
             // 更新頁面內容
             content.innerHTML = html;
             
             console.log('頁面內容已更新:', pageName);
             
-            // 檢查並調用對應頁面的初始化函數
-            const initFunctionName = `init${pageName.charAt(0).toUpperCase() + pageName.slice(1)}Page`;
-            if (window[initFunctionName] && typeof window[initFunctionName] === 'function') {
-                console.log('調用頁面初始化函數:', initFunctionName);
-                window[initFunctionName]();
+            // 修正動態導入路徑
+            try {
+                const pageModule = await import(`./customer/${pageName}.js`);
+                if (typeof pageModule.init === 'function') {
+                    pageModule.init(); // 將監聽器綁到目前內嵌的子頁上
+                }
+            } catch (err) {
+                console.error(`無法載入模組 ./customer/${pageName}.js:`, err);
             }
 
             updateSidebarState(pageName);

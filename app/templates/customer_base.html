@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>線上書店</title>
     
-    <!-- 使用條件判斷來決定使用哪種路徑 -->
-    {% if request is defined and request.host.startswith('localhost:5000') %}
-        <!-- Flask 環境 -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    {% else %}
-        <!-- Live Server 環境 -->
-        <link rel="stylesheet" href="../static/css/style.css">
-    {% endif %}
+    <!-- 載入CSS-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- 載入全部子頁CSS-->
+    {% for page in ['store', 'cart', 'order_record', 'profile'] %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/customer/' + page + '.css') }}">
+    {% endfor %}
 </head>
 <body>
     <!-- 頂部導航欄 -->
@@ -52,12 +51,6 @@
     </main>
 
     <!-- 引入JS -->
-    {% if request is defined and request.host.startswith('localhost:5000') %}
-        <!-- Flask 環境 -->
-        <script src="{{ url_for('static', filename='js/customer_base.js') }}"></script>
-    {% else %}
-        <!-- Live Server 環境 -->
-        <script src="../static/js/customer_base.js"></script>
-    {% endif %}
+    <script src="{{ url_for('static', filename='js/customer_base.js') }}"></script>
 </body>
 </html>
