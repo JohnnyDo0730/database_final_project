@@ -1,13 +1,25 @@
 // 個人資料頁面 JavaScript
 
-// 定義全局初始化函數
-function initProfilePage() {
-    console.log('初始化個人資料頁面');
-    // 個人資料頁面的初始化邏輯
-    // 例如：載入用戶資料、設置事件監聽器等
+export function init() {
+    console.log('profile.js 模組初始化');
+    // 綁定在容器上（比如整個子頁區塊）
+    const container = document.getElementById("profile-page");
+    
+    if (!container) {
+        console.error('找不到 profile-page 元素');
+        return;
+    }
+  
+    /*
+    container.addEventListener("click", function (event) {
+      const targetBtn = event.target.closest(".my-button");
+      if (targetBtn) {
+        console.log("你點擊了個人資料頁面 的按鈕:", targetBtn.dataset.name);
+        // 呼叫該模組內的專屬函數
+        doSomething(targetBtn.dataset.name);
+      }
+    });
+    */
+    
+    console.log('profile.js 事件監聽器已設置');
 }
-
-// 當頁面直接載入時執行初始化
-document.addEventListener('DOMContentLoaded', function() {
-    initProfilePage();
-}); 

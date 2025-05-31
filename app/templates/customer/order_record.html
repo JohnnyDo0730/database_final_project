@@ -1,22 +1,4 @@
-{% extends "customer_base.html" %}
-
-{% block content %}
-<div class="order-page">
+<div id="order-page" class="order-page">
     <h1>訂單查詢</h1>
     <!-- 頁面內容將在這裡 -->
 </div>
-
-<!-- 引入特定頁面的 CSS -->
-{% if request is defined and request.host.startswith('localhost:5000') %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/customer/order_record.css') }}">
-{% else %}
-    <link rel="stylesheet" href="../../static/css/customer/order_record.css">
-{% endif %}
-
-<!-- 引入特定頁面的 JS -->
-{% if request is defined and request.host.startswith('localhost:5000') %}
-    <script src="{{ url_for('static', filename='js/customer/order_record.js') }}"></script>
-{% else %}
-    <script src="../../static/js/customer/order_record.js"></script>
-{% endif %}
-{% endblock %} 

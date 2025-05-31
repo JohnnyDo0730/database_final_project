@@ -1,22 +1,4 @@
-{% extends "customer_base.html" %}
-
-{% block content %}
-<div class="cart-page">
+<div id="cart-page" class="cart-page">
     <h1>購物車</h1>
     <!-- 頁面內容將在這裡 -->
 </div>
-
-<!-- 引入特定頁面的 CSS -->
-{% if request is defined and request.host.startswith('localhost:5000') %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/customer/cart.css') }}">
-{% else %}
-    <link rel="stylesheet" href="../../static/css/customer/cart.css">
-{% endif %}
-
-<!-- 引入特定頁面的 JS -->
-{% if request is defined and request.host.startswith('localhost:5000') %}
-    <script src="{{ url_for('static', filename='js/customer/cart.js') }}"></script>
-{% else %}
-    <script src="../../static/js/customer/cart.js"></script>
-{% endif %}
-{% endblock %} 

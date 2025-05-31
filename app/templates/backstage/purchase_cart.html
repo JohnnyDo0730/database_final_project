@@ -1,22 +1,4 @@
-{% extends "backstage_base.html" %}
-
-{% block content %}
-<div class="purchase-cart-page">
+<div id="purchase-cart-page" class="purchase-cart-page">
     <h1>購物車管理</h1>
     <!-- 頁面內容將在這裡 -->
 </div>
-
-<!-- 引入特定頁面的 CSS -->
-{% if request is defined and request.host.startswith('localhost:5000') %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/backstage/purchase_cart.css') }}">
-{% else %}
-    <link rel="stylesheet" href="../../static/css/backstage/purchase_cart.css">
-{% endif %}
-
-<!-- 引入特定頁面的 JS -->
-{% if request is defined and request.host.startswith('localhost:5000') %}
-    <script src="{{ url_for('static', filename='js/backstage/purchase_cart.js') }}"></script>
-{% else %}
-    <script src="../../static/js/backstage/purchase_cart.js"></script>
-{% endif %}
-{% endblock %} 

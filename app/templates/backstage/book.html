@@ -1,23 +1,4 @@
-{% extends "backstage_base.html" %}
-
-{% block content %}
-<div class="book-page">
+<div id="book-page" class="book-page">
     <h1>書籍管理</h1>
     <!-- 頁面內容將在這裡 -->
-</div>
-
-
-<!-- 引入特定頁面的 CSS -->
-{% if request is defined and request.host.startswith('localhost:5000') %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/backstage/book.css') }}">
-{% else %}
-    <link rel="stylesheet" href="../../static/css/backstage/book.css">
-{% endif %}
-
-<!-- 引入特定頁面的 JS -->
-{% if request is defined and request.host.startswith('localhost:5000') %}
-    <script src="{{ url_for('static', filename='js/backstage/book.js') }}"></script>
-{% else %}
-    <script src="../../static/js/backstage/book.js"></script>
-{% endif %}
-{% endblock %} 
+</div> 
