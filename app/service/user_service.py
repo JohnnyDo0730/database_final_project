@@ -53,13 +53,7 @@ def create_user(username, password, user_type, email=None, address=None):
         raise e
 
 def verify_password(user, password):
-    """
-    驗證用戶密碼
-    
-    :param user: dict, user data
-    :param password: str, password to verify
-    :return: bool, whether the password is correct
-    """
-    if user and check_password_hash(user['password'], password):
+    # 驗證用戶密碼
+    if user and user['password'] == password:
         return True
     return False
