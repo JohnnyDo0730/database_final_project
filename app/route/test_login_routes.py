@@ -14,27 +14,49 @@ def register_page():
     return render_template('register.html')
 
 @main_bp.route('/login', methods=['POST'])
+# 正式登入
+# def login():
+#     """登入"""
+#     username = request.form['username']
+#     password = request.form['password']
+#     user = get_user_by_username(username)
+#     if user and verify_password(user, password):
+#         if user['user_type'] == 'customer':
+#             return redirect('/customer')
+#         elif user['user_type'] == 'staff':
+#             return redirect('/backstage')
+#     return render_template('login.html')
+
+# 測試登入
 def login():
-    """登入驗證"""
+    """登入"""
     # 取得使用者選擇的身份類型和登入資訊
     user_type = request.form['user_type']
     username = request.form['username']
     password = request.form['password']
     
-    # 從資料庫中檢查用戶
-    user = get_user_by_username(username)
+    # 檢查是否為預設使用者
+    is_default_user = False
+    if (user_type == 'customer' and username == 'customer1' and password == 'password1') or \
+       (user_type == 'staff' and username == 'staff1' and password == 'password51'):
+        is_default_user = True
     
-    # 驗證用戶密碼和類型
-    if user and verify_password(user, password) and user['user_type'] == user_type:
-        # 登入成功，跳轉到相應頁面
+    # 如果不是預設使用者，則檢查資料庫
+    is_valid_user = False
+    if not is_default_user:
+        user = get_user_by_username(username)
+        if user and verify_password(user, password) and user['user_type'] == user_type:
+            is_valid_user = True
+    
+    # 如果是預設使用者或資料庫中的有效使用者，則跳轉到相應頁面
+    if is_default_user or is_valid_user:
         if user_type == 'customer':
-            return redirect('/customer?username=' + username)  # 傳遞用戶名到顧客頁面
+            return redirect('/customer')
         elif user_type == 'staff':
             return redirect('/backstage')
     
-    # 登入失敗，顯示錯誤訊息
-    error_message = "帳號或密碼輸入錯誤，請重新輸入"
-    return render_template('login.html', error=error_message)
+    # 若驗證失敗，回到登入頁面
+    return render_template('login.html')
 
 @main_bp.route('/logout', methods=['GET', 'POST'])
 def logout():
