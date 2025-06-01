@@ -21,3 +21,13 @@ def get_total_pages(search_keyword):
         ('%' + search_keyword + '%',)
     ).fetchone()[0]
     return total_pages//10 + 1
+
+def add_to_cart(isbn, quantity):
+    db = get_db()
+    db.execute(
+        'INSERT INTO purchase_cart (isbn, quantity) VALUES (?, ?)',
+        (isbn, quantity)
+    )
+    db.commit()
+    
+    print(f"書籍 ISBN: {isbn}, 數量: {quantity} 已加入購物車")

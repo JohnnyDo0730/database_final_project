@@ -1,6 +1,6 @@
 from flask import render_template, request, jsonify
 from app.route import backstage_bp
-from app.service.backstage_service import get_book_list, get_total_pages
+from app.service.backstage_service import get_book_list, get_total_pages, add_to_cart
 
 ''' 後台頁面模板 '''
 @backstage_bp.route('/backstage')
@@ -54,16 +54,24 @@ def backstage_book_content():
         return jsonify({'error': str(e)}), 500
 
 
-#書籍頁:搜尋
-@backstage_bp.route('/backstage/book/search', methods=['POST'])
-def backstage_book_search():
-    raise NotImplementedError
-
-
 #書籍頁:加入購物車
 @backstage_bp.route('/backstage/book/add_to_cart', methods=['POST'])
 def backstage_book_add_to_cart():
-    raise NotImplementedError
+    try:
+        # 獲取書籍ISBN、數量
+        isbn = request.json.get('isbn')
+        quantity = request.json.get('quantity')
+        if isbn is None or quantity is None:
+            return jsonify({'error': 'ISBN 或 數量不能為空'}), 400
+
+        # 將書籍加入購物車
+        add_to_cart(isbn, quantity)
+
+        # 返回成功訊息
+        return jsonify({'message': '書籍加入購物車成功'})
+    except Exception as e:
+        print(f"書籍加入購物車失敗: {e}")
+        return jsonify({'error': str(e)}), 500
 
 
 #購物車頁:送出訂單

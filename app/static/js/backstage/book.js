@@ -117,7 +117,7 @@ function updateBookList(book_list) {
     bookInfo.classList.add("book-info");
     bookInfo.innerHTML = `
       <h3 class="book-title">${escapeHtml(book.title)}</h3>
-      <p><strong>ISBN:</strong> ${escapeHtml(book.isbn)}</p>
+      <p><strong>ISBN:</strong> ${escapeHtml(book.ISBN)}</p>
       <p><strong>作者:</strong> ${escapeHtml(book.author)}</p>
       <p><strong>出版社:</strong> ${escapeHtml(book.publisher)}</p>
       <p><strong>價格:</strong> ${escapeHtml(book.price)}</p>
@@ -133,7 +133,7 @@ function updateBookList(book_list) {
     bookOrder.innerHTML = `
       <label for="order-quantity">訂購數量:</label>
       <input type="number" class="order-quantity" min="1" value="1">
-      <button class="order-btn" data-isbn="${book.isbn}">下訂</button>
+      <button class="order-btn" data-isbn="${book.ISBN}">加入購物車</button>
     `;
     bookBlock.appendChild(bookOrder);
 
@@ -143,12 +143,35 @@ function updateBookList(book_list) {
         const isbn = orderBtn.dataset.isbn;
         const quantity = orderBtn.closest(".book-order").querySelector(".order-quantity").value;
         console.log(`下訂書籍 ISBN: ${isbn}, 數量: ${quantity}`);
+
         // 呼叫訂購函數(未實現)
+        addToCart(isbn, quantity);
       }
     });
 
     bookContainer.appendChild(bookBlock);
   });
+}
+
+
+async function addToCart(isbn, quantity) {
+  try {
+    const response = await fetch(`/backstage/book/add_to_cart`, {
+      method: 'POST',
+      // 傳送 JSON 資料
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ isbn, quantity })
+    });
+    if (response.ok) {
+      alert("書籍加入購物車成功");
+    } else {
+      alert("書籍加入購物車失敗");
+    }
+  } catch (error) {
+    console.error("書籍加入購物車失敗:", error);
+  }
 }
 
 // 顯示載入中
