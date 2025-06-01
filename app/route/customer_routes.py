@@ -1,6 +1,6 @@
 from flask import render_template, request, session, redirect, url_for, flash
 from app.route import customer_bp
-from app.service.user_service import get_customer_profile_by_username
+from app.service.customer_service import get_customer_profile_by_username
 
 ''' 客戶頁面模板 '''
 @customer_bp.route('/customer')
