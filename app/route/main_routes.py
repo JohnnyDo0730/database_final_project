@@ -37,8 +37,8 @@ def login():
     
     # 檢查是否為預設使用者
     is_default_user = False
-    if (user_type == 'customer' and username == 'customer' and password == 'customer123') or \
-       (user_type == 'staff' and username == 'staff' and password == 'staff123'):
+    if (user_type == 'customer' and username == 'customer1' and password == 'password1') or \
+       (user_type == 'staff' and username == 'staff1' and password == 'password51'):
         is_default_user = True
     
     # 如果不是預設使用者，則檢查資料庫
