@@ -1,10 +1,14 @@
 from flask import render_template, request, session, redirect, url_for, flash
 from app.route import customer_bp
-from app.service.customer_service import get_customer_profile_by_username
+from app.service.customer_service import get_customer_profile_by_username, get_customer_profile_by_user_id
+from app.service.user_service import get_user_by_username
 
 ''' 客戶頁面模板 '''
 @customer_bp.route('/customer')
 def customer_page():
+    # 檢查用戶是否已登入
+    if not session.get('logged_in') or session.get('user_type') != 'customer':
+        return redirect('/')
     return render_template('customer_base.html')
 
 ''' 客戶頁面子頁 '''
@@ -27,11 +31,15 @@ def customer_order_record_page():
 #客戶個人資料頁面
 @customer_bp.route('/customer/profile')
 def customer_profile_page():
-    # 從 session 或 cookie 獲取用戶名稱
-    username = request.args.get('username', 'customer')  # 預設為 'customer'
+    # 檢查用戶是否已登入
+    if not session.get('logged_in') or session.get('user_type') != 'customer':
+        return redirect('/')
     
-    # 獲取用戶個人資料
-    profile = get_customer_profile_by_username(username)
+    # 從 session 中獲取當前登入用戶的 user_id
+    user_id = session.get('user_id')
+    
+    # 使用 user_id 獲取完整的顧客資料
+    profile = get_customer_profile_by_user_id(user_id) if user_id else None
     
     return render_template('customer/profile.html', profile=profile)
 
