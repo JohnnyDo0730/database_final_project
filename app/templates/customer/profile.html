@@ -1,4 +1,47 @@
+{% extends 'customer_base.html' %}
+
+{% block content %}
 <div id="profile-page" class="profile-page">
-    <h1>個人資料</h1>
-    <!-- 頁面內容將在這裡 -->
+    <div class="profile-container">
+        <h1>個人資料</h1>
+        
+        {% if profile %}
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="profile-icon">👤</i>
+                </div>
+                <h2>{{ profile.name }}</h2>
+            </div>
+            
+            <div class="profile-details">
+                <div class="profile-item">
+                    <span class="label">帳號名稱：</span>
+                    <span class="value">{{ profile.name }}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="label">創建帳號時間：</span>
+                    <span class="value">{{ profile.created_at }}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="label">信箱：</span>
+                    <span class="value">{{ profile.email or '未設定' }}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="label">地址：</span>
+                    <span class="value">{{ profile.address or '未設定' }}</span>
+                </div>
+                <div class="profile-item balance">
+                    <span class="label">帳戶餘額：</span>
+                    <span class="value">{{ profile.balance }} 元</span>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-profile-message">
+            <p>查無此帳號</p>
+        </div>
+        {% endif %}
+    </div>
 </div>
+{% endblock %}

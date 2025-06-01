@@ -1,5 +1,6 @@
-from flask import render_template
+from flask import render_template, request, session, redirect, url_for, flash
 from app.route import customer_bp
+from app.service.user_service import get_customer_profile_by_username
 
 ''' 客戶頁面模板 '''
 @customer_bp.route('/customer')
@@ -26,7 +27,13 @@ def customer_order_record_page():
 #客戶個人資料頁面
 @customer_bp.route('/customer/profile')
 def customer_profile_page():
-    return render_template('customer/profile.html')
+    # 從 session 或 cookie 獲取用戶名稱
+    username = request.args.get('username', 'customer')  # 預設為 'customer'
+    
+    # 獲取用戶個人資料
+    profile = get_customer_profile_by_username(username)
+    
+    return render_template('customer/profile.html', profile=profile)
 
 
 ''' 客戶頁面功能 '''
