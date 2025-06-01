@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, jsonify
 from app.route import main_bp
-from app.service.user_service import get_user_by_username, verify_password
+from app.service.user_service import get_user_by_username, verify_password, create_user
 
 
 @main_bp.route('/')
@@ -80,4 +80,3 @@ def register():
     elif user_type == 'staff':
         user_id = create_user(username, password, user_type)
     return redirect('/')
-
