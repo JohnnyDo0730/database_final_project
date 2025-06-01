@@ -1,106 +1,207 @@
-/* 個人資料頁面樣式 */ 
+/* 個人資料頁面樣式 - 新設計 */
+
+.profile-wrapper {
+    width: 100%;
+} 
 
 .profile-page {
     padding: 2rem;
+    background-color: #f9f9f9;
+    min-height: 80vh;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px; /* 設定內容區最大寬度，padding 會在此之外 */
 }
 
 .profile-container {
-    max-width: 800px;
+    max-width: 700px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
-.profile-page h1 {
-    color: #333;
-    margin-bottom: 2rem;
-    border-bottom: 2px solid #4a86e8;
-    padding-bottom: 0.5rem;
-}
-
-.profile-card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    margin-bottom: 2rem;
-}
-
-.profile-header {
-    background: linear-gradient(135deg, #4a86e8, #6ca8e8);
-    color: white;
-    padding: 2rem;
+.profile-title {
+    color: #2c3e50;
+    margin-bottom: 2.5rem;
     text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    position: relative;
+}
+
+.profile-title:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(to right, #4a86e8, #6ca8e8);
+}
+
+.profile-content {
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 800px;
+}
+
+/* 頁面頭部設計 */
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .profile-avatar {
     width: 100px;
     height: 100px;
-    background-color: white;
+    background: linear-gradient(135deg, #4a86e8, #6ca8e8);
     border-radius: 50%;
-    margin: 0 auto 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    margin-right: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .profile-icon {
     font-size: 3rem;
+    color: white;
 }
 
-.profile-header h2 {
-    margin: 0;
-    font-size: 1.8rem;
-}
-
-.profile-details {
-    padding: 2rem;
-}
-
-.profile-item {
-    display: flex;
-    margin-bottom: 1.2rem;
-    padding-bottom: 0.8rem;
-    border-bottom: 1px solid #eee;
-    align-items: center;
-}
-
-.profile-item:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-.profile-item .label {
-    font-weight: bold;
-    min-width: 150px;
-    color: #555;
-}
-
-.profile-item .value {
+.profile-name {
     flex: 1;
-    color: #333;
-    font-size: 1.05rem;
 }
 
-.profile-item.balance {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    background-color: #f8f9fa;
+.profile-name h2 {
+    margin: 0;
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.profile-since {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* 資訊區塊設計 */
+.profile-info-section {
+    margin-bottom: 2.5rem;
+    width: 100%;
+}
+
+.profile-info-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    justify-content: center;
+}
+
+.profile-info-item {
+    flex: 1;
+    min-width: 300px;
+    margin-bottom: 1rem;
+    padding: 1.2rem;
+    background-color: white;
     border-radius: 8px;
-    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-right: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.profile-item.balance .value {
-    color: #28a745;
-    font-weight: bold;
+.profile-info-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info-item:last-child {
+    margin-right: 0;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #7f8c8d;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.info-value {
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+/* 餘額區塊設計 */
+.profile-balance-section {
+    background: linear-gradient(135deg, #4a86e8, #6ca8e8);
+    padding: 2rem;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 20px rgba(74, 134, 232, 0.3);
+    width: 100%;
+}
+
+.balance-label {
     font-size: 1.2rem;
+    font-weight: 600;
 }
 
+.balance-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+/* 查無帳號訊息 */
 .no-profile-message {
     text-align: center;
     padding: 3rem;
-    background-color: #f8f9fa;
+    background-color: white;
     border-radius: 10px;
-    color: #dc3545;
+    color: #e74c3c;
     font-size: 1.2rem;
-    border: 1px dashed #dc3545;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .profile-info-row {
+        flex-direction: column;
+    }
+    
+    .profile-info-item {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 1.5rem;
+    }
+    
+    .profile-balance-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .balance-label {
+        margin-bottom: 0.5rem;
+    }
 }
