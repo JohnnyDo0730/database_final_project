@@ -1,1 +1,174 @@
-/* 書籍管理頁面樣式 */ 
+/* 書籍管理頁面樣式 */
+
+/* 書籍頁面整體布局 */
+.book-page {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 120px); /* 減去頂部導航欄和padding的高度 */
+    gap: 1rem;
+}
+
+/* 搜尋區域樣式 */
+.search-container {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem 0;
+}
+
+.search-input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.search-btn {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-btn:hover {
+    background-color: #0069d9;
+}
+
+/* 書籍顯示區域樣式 - 可滾動 */
+.books-container {
+    flex: 1; /* 佔據剩餘空間 */
+    overflow-y: auto; /* 啟用垂直滾動 */
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 1rem;
+    background-color: #f8f9fa;
+}
+
+/* 書籍區塊樣式 */
+.book-block {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.book-info {
+    flex: 1;
+}
+
+.book-title {
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.book-info p {
+    margin-bottom: 0.25rem;
+    color: #666;
+}
+
+.book-order {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 0.5rem;
+    min-width: 150px;
+}
+
+.order-quantity {
+    width: 80px;
+    padding: 0.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.order-btn {
+    padding: 0.5rem 1rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.order-btn:hover {
+    background-color: #218838;
+}
+
+/* 分頁控制樣式 */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.page-btn {
+    padding: 0.5rem 1rem;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.page-btn:hover {
+    background-color: #5a6268;
+}
+
+.page-btn:disabled {
+    background-color: #adb5bd;
+    cursor: not-allowed;
+}
+
+.page-input-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#current-page {
+    width: 60px;
+    padding: 0.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .book-block {
+        flex-direction: column;
+    }
+    
+    .book-order {
+        align-items: flex-start;
+        margin-top: 1rem;
+    }
+}
+
+/* 載入中和錯誤提示 */
+.loading-indicator {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    display: none;
+} 

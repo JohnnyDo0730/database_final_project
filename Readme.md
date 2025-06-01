@@ -138,6 +138,7 @@ git push origin feature/some-feature-name
 2. 資料庫檔案會自動在 `instance` 目錄下創建
 3. 初始化資料庫可使用以下命令(只有第一次需要執行)：
    ```bash
+   pipenv shell
    flask init-db
    ```
 4. 開發新功能時，請遵循以下步驟：

@@ -62,6 +62,12 @@ CREATE TABLE order_items (
   FOREIGN KEY (ISBN) REFERENCES books (ISBN)
 );
 
+CREATE TABLE cart (
+  isbn INTEGER NOT NULL,
+  quantity INTEGER NOT NULL,
+  FOREIGN KEY (isbn) REFERENCES books (ISBN)
+);
+
 CREATE TABLE purchases_orders (
   purchase_id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER NOT NULL,
@@ -76,6 +82,12 @@ CREATE TABLE po_items (
   quantity INTEGER NOT NULL,
   FOREIGN KEY (po_id) REFERENCES purchases_orders (purchase_id),
   FOREIGN KEY (ISBN) REFERENCES books (ISBN)
+);
+
+CREATE TABLE purchase_cart (
+  isbn INTEGER NOT NULL,
+  quantity INTEGER NOT NULL,
+  FOREIGN KEY (isbn) REFERENCES books (ISBN)
 );
 
 -- purchase 待簽收
