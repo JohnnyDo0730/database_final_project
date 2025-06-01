@@ -1,5 +1,6 @@
-from flask import render_template
+from flask import render_template, request, jsonify
 from app.route import backstage_bp
+from app.service.backstage_service import get_book_list, get_total_pages
 
 ''' 後台頁面模板 '''
 @backstage_bp.route('/backstage')
@@ -34,6 +35,25 @@ def backstage_purchase_record_page():
 
 
 ''' 後台頁面功能 '''
+# 書籍頁: 獲取當前頁之書籍列表、總頁數
+@backstage_bp.route('/backstage/book/content', methods=['GET'])
+def backstage_book_content():
+    try:
+        # 獲取搜尋關鍵字、頁數
+        search_keyword = request.args.get('search_keyword', '', type=str)
+        page = request.args.get('page', 1, type=int)
+
+        # 獲取書籍列表
+        book_list = get_book_list(search_keyword, page)
+        # 獲取總頁數
+        total_pages = get_total_pages(search_keyword)
+
+        # 返回書籍列表和總頁數
+        return jsonify({'book_list': book_list, 'total_pages': total_pages})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 #書籍頁:搜尋
 @backstage_bp.route('/backstage/book/search', methods=['POST'])
 def backstage_book_search():
