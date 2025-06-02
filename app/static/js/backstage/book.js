@@ -12,31 +12,61 @@ export function init() {
 
     // 更新頁面
     updatePage();
-
-    // 綁定固定按鈕事件
-    container.addEventListener("click", function (event) {
-        const searchBtn = event.target.closest("#search-button");
-        if (searchBtn) {
-            // 更新頁面
+    
+    // 監聽搜尋框輸入，顯示/隱藏清除按鈕
+    const searchInput = document.getElementById("book-search");
+    searchInput.addEventListener("input", function() {
+        const clearSearchBtn = document.getElementById("clear-search");
+        clearSearchBtn.style.display = this.value ? "flex" : "none";
+    });
+    
+    // 監聽 Enter 鍵
+    searchInput.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            const currentPage = document.getElementById("current-page");
+            currentPage.value = 1;
             updatePage();
         }
+    });
+    
+    // 監聽清除按鈕點擊
+    const clearSearchBtn = document.getElementById("clear-search");
+    clearSearchBtn.addEventListener("click", function() {
+        const searchInput = document.getElementById("book-search");
+        searchInput.value = "";
+        this.style.display = "none";
+        const currentPage = document.getElementById("current-page");
+        currentPage.value = 1;
+        updatePage();
+    });
 
-        const prevPageBtn = event.target.closest("#prev-page");
-        const nextPageBtn = event.target.closest("#next-page");
-        if (prevPageBtn) {
-            const currentPage = document.getElementById("current-page");
-            if (currentPage.value > 1) {
-                currentPage.value--;
-                updatePage();
-            }
-        }
-        if (nextPageBtn) {
-            const currentPage = document.getElementById("current-page");
-            if (currentPage.value < parseInt(currentPage.max)) {
-                currentPage.value++;
-                updatePage();
-            }
-        }
+    // 監聽搜尋按鈕點擊
+    const searchBtn = document.getElementById("search-button");
+    searchBtn.addEventListener("click", function() {
+      const currentPage = document.getElementById("current-page");
+      currentPage.value = 1;
+      updatePage();
+    });
+
+    // 監聽上一頁按鈕點擊
+    const prevPageBtn = document.getElementById("prev-page");
+    prevPageBtn.addEventListener("click", function() {
+      const currentPage = document.getElementById("current-page");
+      if (currentPage.value > 1) {
+        currentPage.value--;
+        updatePage();
+      }
+    });
+
+    // 監聽下一頁按鈕點擊
+    const nextPageBtn = document.getElementById("next-page");
+    nextPageBtn.addEventListener("click", function() {
+      const currentPage = document.getElementById("current-page");
+      if (currentPage.value < parseInt(currentPage.max)) {
+        currentPage.value++;
+        updatePage();
+      }
     });
     
     // 監聽頁碼輸入變化

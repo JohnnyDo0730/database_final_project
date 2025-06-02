@@ -15,12 +15,39 @@
     padding: 1rem 0;
 }
 
-.search-input {
+.search-input-wrapper {
+    position: relative;
     flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 100%;
     padding: 0.5rem;
+    padding-right: 2rem; /* 為清除按鈕留出空間 */
     border: 1px solid #dee2e6;
     border-radius: 4px;
     font-size: 1rem;
+}
+
+.clear-search-btn {
+    position: absolute;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s;
+}
+
+.clear-search-btn:hover {
+    color: #333;
 }
 
 .search-btn {
@@ -171,4 +198,11 @@
     border-radius: 4px;
     margin-bottom: 1rem;
     display: none;
+}
+
+/* 無結果提示 */
+.no-results {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
 } 
