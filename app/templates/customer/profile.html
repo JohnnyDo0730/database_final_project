@@ -1,0 +1,54 @@
+{% extends 'customer_base.html' %}
+
+{% block content %}
+<div class="profile-wrapper">
+  <div id="profile-page" class="profile-page">
+    <div class="profile-container">
+        <h1 class="profile-title">個人資料</h1>
+        
+        {% if profile %}
+        <div class="profile-content">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="profile-icon">👤</i>
+                </div>
+                <div class="profile-name">
+                    <h2>{{ profile.name }}</h2>
+                    <p class="profile-since">創建於 {{ profile.created_at }}</p>
+                </div>
+            </div>
+            
+            <div class="profile-info-section">
+                <div class="profile-info-row">
+                    <div class="profile-info-item">
+                        <div class="info-label">帳號名稱</div>
+                        <div class="info-value">{{ profile.name }}</div>
+                    </div>
+                    <div class="profile-info-item">
+                        <div class="info-label">信箱</div>
+                        <div class="info-value">{{ profile.email or '未設定' }}</div>
+                    </div>
+                </div>
+                
+                <div class="profile-info-row">
+                    <div class="profile-info-item">
+                        <div class="info-label">地址</div>
+                        <div class="info-value">{{ profile.address or '未設定' }}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-balance-section">
+                <div class="balance-label">帳戶餘額</div>
+                <div class="balance-value">{{ profile.balance }} 元</div>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-profile-message">
+            <p>查無此帳號</p>
+        </div>
+        {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
