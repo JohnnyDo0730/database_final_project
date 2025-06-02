@@ -125,13 +125,12 @@ def customer_cart_submit():
             return jsonify({'success': False, 'error': '非顧客用戶'}), 403
         
         # 發送訂單
-        success = send_order(user_id)
+        result = send_order(user_id)
 
-        if not success:
-            return jsonify({'success': False, 'error': '購物車為空'}), 500
-        else:
-            # 返回成功訊息
+        if result['success']:
             return jsonify({'success': True, 'message': '訂單送出成功'})
+        else:
+            return jsonify({'success': False, 'error': result['message']}), 500
 
     except Exception as e:
         print(f"訂單送出失敗: {e}")
@@ -148,17 +147,17 @@ def customer_cart_remove():
 
     try:
         if user_type != 'customer':
-            return jsonify({'error': '非顧客用戶'}), 403
+            return jsonify({'success': False, 'error': '非顧客用戶'}), 403
 
         # 移除購物車
         remove_from_cart(user_id, isbn)
 
         # 返回成功訊息
-        return jsonify({'message': '商品移除購物車成功'})
+        return jsonify({'success': True, 'message': '商品移除購物車成功'})
 
     except Exception as e:
         print(f"商品移除購物車失敗: {e}")
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 
 #訂單頁:退貨
