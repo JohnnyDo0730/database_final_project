@@ -163,7 +163,7 @@ function updateBookList(book_list) {
     bookOrder.innerHTML = `
       <label for="order-quantity">訂購數量:</label>
       <input type="number" class="order-quantity" min="1" value="1">
-      <button class="order-btn" data-isbn="${book.ISBN}">加入購物車</button>
+      <button class="order-btn" data-isbn="${escapeHtml(book.ISBN)}">加入購物車</button>
     `;
     bookBlock.appendChild(bookOrder);
 
