@@ -13,7 +13,7 @@ def update_book_restock(isbn, need_commit=True):
         (isbn,)
     ).fetchone()
 
-    if book_required is None:
+    if book_required[0] is None:
         book_required = [0]
 
     isEnough = book_required[0] <= book_stock[0]
@@ -108,8 +108,92 @@ def add_to_cart(user_id, isbn, quantity):
         print(f"加入購物車時發生錯誤: {e}")
         raise e
 
-''' 購物車 ''' #取消訂單需要檢查isEnough
+''' 購物車 '''
+def get_cart_content(user_id):
+    db = get_db()
 
+    # 使用 JOIN 一次取得 isbn、quantity 與書名 title
+    cart_content = db.execute('''
+        SELECT c.isbn, c.quantity, b.title
+        FROM cart c
+        JOIN books b ON c.isbn = b.isbn
+        WHERE c.user_id = ?
+    ''', (user_id,)).fetchall()
+
+    if not cart_content:
+        return []
+    else:
+        return [dict(row) for row in cart_content]
+
+def send_order(user_id):
+    db = get_db()
+
+    try:
+        # 先檢查購物車是否有內容
+        existing = db.execute(
+            'SELECT COUNT(*) FROM cart WHERE user_id = ?',
+            (user_id,)
+        ).fetchone()
+
+        if existing[0] > 0: 
+            # 找出庫存足夠的項目
+            book_list = db.execute('''
+                SELECT c.isbn, c.quantity, b.stock 
+                FROM cart c 
+                JOIN books b ON c.isbn = b.ISBN 
+                WHERE c.user_id = ? AND c.quantity <= b.stock
+            ''', (user_id,)).fetchall()
+
+            if not book_list:
+                return {"success": False, "message": "沒有任何商品庫存足夠，無法送出訂單"}
+
+            # 可進一步將這些商品寫入訂單（略）
+
+            # 清除已成功下單的項目（用 IN）
+            isbn_list = [row['isbn'] for row in book_list]
+            db.execute(f'''
+                DELETE FROM cart 
+                WHERE user_id = ? AND isbn IN ({','.join(['?']*len(isbn_list))})
+            ''', (user_id, *isbn_list))
+
+            # 建立訂單紀錄、扣款(未實現)
+
+            db.commit()
+
+            # 返回成功訊息
+            print(f"訂單送出成功")
+            return True
+        else:
+            # 如果購物車沒有商品，則返回錯誤訊息
+            print(f"購物車沒有商品")
+            return False
+
+    except Exception as e:
+        print(f"訂單送出失敗: {e}")
+        db.rollback()
+        return False
+
+def remove_from_cart(user_id, isbn):
+    db = get_db()
+
+    try:
+        print(f"移除書籍 user_id: {user_id}, ISBN: {isbn}")
+        db.execute(
+            'DELETE FROM cart WHERE user_id = ? AND isbn = ?',
+            (user_id, isbn)
+        )
+
+        #取消訂單需要檢查isEnough
+        isEnough = update_book_restock(isbn,need_commit=False)
+
+        db.commit()
+
+        # 返回成功訊息
+        return True
+    except Exception as e:
+        print(f"商品移除購物車失敗: {e}")
+        db.rollback()
+        return False
 
 
 ''' 客戶資訊頁 '''

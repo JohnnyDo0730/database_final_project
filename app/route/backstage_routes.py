@@ -1,6 +1,6 @@
 from flask import render_template, request, jsonify, session
 from app.route import backstage_bp
-from app.service.backstage_service import get_book_list, get_total_pages, add_to_cart, get_cart_content, send_purchase_order, remove_from_purchase_cart
+from app.service.backstage_service import *
 
 ''' 後台頁面模板 '''
 @backstage_bp.route('/backstage')

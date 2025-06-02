@@ -38,7 +38,6 @@ def add_to_cart(user_id, isbn, quantity):
         
         if existing:
             # 如果已存在，更新數量
-
             new_quantity = existing['quantity'] + quantity
             db.execute(
                 'UPDATE purchase_cart SET quantity = ? WHERE user_id = ? AND isbn = ?',
@@ -135,3 +134,7 @@ def remove_from_purchase_cart(user_id, isbn):
         print(f"商品移除購物車失敗: {e}")
         db.rollback()
         return False
+
+
+
+''' 簽收 ''' # 簽收需要更新庫存、檢查補貨清單
