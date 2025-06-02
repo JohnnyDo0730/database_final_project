@@ -155,7 +155,7 @@ def send_order(user_id):
                 WHERE user_id = ? AND isbn IN ({','.join(['?']*len(isbn_list))})
             ''', (user_id, *isbn_list))
 
-            # 建立訂單紀錄、扣款(未實現)
+            # 建立訂單紀錄、扣款
             result = add_to_order(user_id, book_list, need_commit=False)
 
             db.commit()
@@ -195,7 +195,7 @@ def add_to_order(user_id, book_list, need_commit=True):
         # 建立訂單紀錄
         db.execute(
             'INSERT INTO orders (user_id, order_date) VALUES (?, ?)',
-            (user_id, datetime.now())
+            (user_id, datetime.now().strftime('%Y-%m-%d'))
         )
 
         # 取得訂單編號
@@ -206,8 +206,8 @@ def add_to_order(user_id, book_list, need_commit=True):
         # 建立訂單項目紀錄
         for book in book_list:
             db.execute(
-                'INSERT INTO order_items (order_id, isbn, quantity) VALUES (?, ?, ?)',
-                (order_id, book['isbn'], book['quantity'])
+                'INSERT INTO order_items (order_id, isbn, quantity, order_status) VALUES (?, ?, ?, ?)',
+                (order_id, book['isbn'], book['quantity'], '待簽收')
             )
 
         if need_commit:
@@ -241,6 +241,56 @@ def remove_from_cart(user_id, isbn):
         print(f"商品移除購物車失敗: {e}")
         db.rollback()
         return False
+
+
+''' 訂單查詢頁 '''
+def get_user_orders(user_id):
+    """根據用戶ID獲取所有訂單資料"""
+    db = get_db()
+    try:
+        # 獲取該用戶的所有訂單
+        orders = db.execute(
+            'SELECT order_id, order_date, order_status FROM orders WHERE user_id = ? ORDER BY order_date DESC',
+            (user_id,)
+        ).fetchall()
+
+        # 將結果轉換為字典列表
+        orders_list = []
+
+        for order in orders:
+            order_dict = dict(order)
+
+            # 獲取該訂單的所有項目
+            order_items = db.execute(
+                'SELECT oi.ISBN, oi.quantity, b.title, b.price ' 
+                'FROM order_items oi '
+                'JOIN books b ON oi.ISBN = b.ISBN '
+                'WHERE oi.order_id = ?',
+                (order_dict['order_id'],)
+            ).fetchall()
+
+            # 計算訂單總金額
+            total_amount = 0
+            items_list = []
+
+            for item in order_items:
+                item_dict = dict(item)
+                # 計算該項目總價
+                item_dict['total_price'] = item_dict['quantity'] * item_dict['price']
+                total_amount += item_dict['total_price']
+                items_list.append(item_dict)
+
+            # 將項目列表添加到訂單中
+            order_dict['items'] = items_list
+            order_dict['total_amount'] = total_amount
+
+            orders_list.append(order_dict)
+
+        return {"success": True, "orders": orders_list}
+    except Exception as e:
+        print(f"獲取訂單資料時發生錯誤: {e}")
+        return {"success": False, "message": "獲取訂單資料時發生錯誤"}
+
 
 
 ''' 客戶資訊頁 '''

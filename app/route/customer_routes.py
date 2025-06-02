@@ -1,6 +1,8 @@
 from flask import render_template, request, session, redirect, url_for, flash, jsonify
 from app.route import customer_bp
 from app.service.customer_service import *
+
+
 ''' 客戶頁面模板 '''
 @customer_bp.route('/customer')
 def customer_page():
@@ -160,6 +162,30 @@ def customer_cart_remove():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
+#訂單頁:獲取訂單記錄
+@customer_bp.route('/customer/order_record/get_orders')
+def customer_order_record_get_orders():
+    # 獲取當前登入用戶的 user_id
+    user_id = session.get('user_id')
+
+    try:
+        # 獲取該用戶的所有訂單
+        result = get_user_orders(user_id)
+        if result['success']:
+            return jsonify({
+                'success': True,
+                'orders': result['orders']
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'error': result['message']
+            }), 500
+    except Exception as e:
+        print(f"獲取訂單記錄失敗: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+        
 #訂單頁:退貨
 @customer_bp.route('/customer/order_record/return', methods=['POST'])
 def customer_order_record_return():
