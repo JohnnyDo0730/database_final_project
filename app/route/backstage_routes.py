@@ -38,15 +38,15 @@ def backstage_purchase_record_page():
 # 書籍頁: 獲取當前頁之書籍列表、總頁數
 @backstage_bp.route('/backstage/book/content', methods=['GET'])
 def backstage_book_content():
-    try:
-        # 獲取搜尋關鍵字、頁數
-        search_keyword = request.args.get('search_keyword', '', type=str)
-        page = request.args.get('page', 1, type=int)
+    # 獲取搜尋關鍵字、頁數
+    search_keyword = request.args.get('search_keyword', '', type=str)
+    page = request.args.get('page', 1, type=int)
 
+    try:
         # 獲取書籍列表
-        book_list = get_book_list(search_keyword, page)
+        book_list = get_book_list(search_keyword, page, items_per_page=10)
         # 獲取總頁數
-        total_pages = get_total_pages(search_keyword)
+        total_pages = get_total_pages(search_keyword, items_per_page=10)
 
         # 返回書籍列表和總頁數
         return jsonify({'book_list': book_list, 'total_pages': total_pages})
@@ -57,10 +57,10 @@ def backstage_book_content():
 #書籍頁:加入購物車
 @backstage_bp.route('/backstage/book/add_to_cart', methods=['POST'])
 def backstage_book_add_to_cart():
+    # 獲取書籍ISBN、數量
+    isbn = request.json.get('isbn')
+    quantity = request.json.get('quantity')
     try:
-        # 獲取書籍ISBN、數量
-        isbn = request.json.get('isbn')
-        quantity = request.json.get('quantity')
         if isbn is None or quantity is None:
             return jsonify({'error': 'ISBN 或 數量不能為空'}), 400
 
