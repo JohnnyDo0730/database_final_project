@@ -23,15 +23,38 @@ def get_total_pages(search_keyword, items_per_page=12):
     ).fetchone()[0]
     return total_pages//items_per_page + 1
 
-def add_to_cart(isbn, quantity):
+def add_to_cart(user_id, isbn, quantity):
     db = get_db()
-    db.execute(
-        'INSERT INTO cart (isbn, quantity) VALUES (?, ?)',
-        (isbn, quantity)
-    )
-    db.commit()
-    
-    print(f"書籍 ISBN: {isbn}, 數量: {quantity} 已加入購物車")
+
+    try:
+        # 先檢查是否已有這本書在購物車
+        existing = db.execute(
+            'SELECT quantity FROM cart WHERE user_id = ? AND isbn = ?',
+            (user_id, isbn)
+        ).fetchone()
+        
+        if existing:
+            # 如果已存在，更新數量
+            new_quantity = existing['quantity'] + quantity
+            db.execute(
+                'UPDATE cart SET quantity = ? WHERE user_id = ? AND isbn = ?',
+                (new_quantity, user_id, isbn)
+            )
+            print(f"書籍 ISBN: {isbn} 已存在，數量更新為 {new_quantity}")
+        else:
+            # 否則插入新項目
+            db.execute(
+                'INSERT INTO cart (user_id, isbn, quantity) VALUES (?, ?, ?)',
+                (user_id, isbn, quantity)
+            )
+            print(f"書籍 ISBN: {isbn}, 數量: {quantity} 已加入購物車")
+
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        print(f"加入購物車時發生錯誤: {e}")
+        raise e
+
 
 
 

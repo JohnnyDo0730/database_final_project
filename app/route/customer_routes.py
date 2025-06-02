@@ -69,21 +69,21 @@ def customer_store_content():
 #書籍頁:商品加入購物車
 @customer_bp.route('/customer/store/add_to_cart', methods=['POST'])
 def customer_store_add_to_cart():
-    # 檢查用戶是否已登入
-    if not session.get('logged_in') or session.get('user_type') != 'customer':
-        return jsonify({'error': '請先登入'}), 401
-    
-    data = request.get_json()
-    isbn = data.get('isbn')
-    quantity = int(data.get('quantity', 1))
+    # 獲取書籍ISBN、數量
+    isbn = request.json.get('isbn')
+    quantity = int(request.json.get('quantity'))
+
     user_id = session.get('user_id')
+    user_type = session.get('user_type')
     
     try:
+        if user_type != 'customer':
+            return jsonify({'error': '非顧客用戶'}), 403
         if isbn is None or quantity is None:
             return jsonify({'error': 'ISBN 或 數量不能為空'}), 400
 
         # 將書籍加入購物車
-        add_to_cart(isbn, quantity)
+        add_to_cart(user_id, isbn, quantity)
 
         # 返回成功訊息
         return jsonify({'message': '書籍加入購物車成功'})
