@@ -306,7 +306,7 @@ INSERT INTO purchases_orders (user_id, purchase_date, purchase_status) VALUES
 (10, '2025-03-10', '處理中');
 
 -- 插入採購訂單項目數據 (10 筆)
-INSERT INTO po_items (po_id, ISBN, quantity) VALUES
+INSERT INTO po_items (purchase_id, ISBN, quantity) VALUES
 (1, 9780001, 10),
 (2, 9780002, 15),
 (3, 9780003, 20),

@@ -63,9 +63,11 @@ CREATE TABLE order_items (
 );
 
 CREATE TABLE cart (
+  user_id INTEGER NOT NULL,
   isbn INTEGER NOT NULL,
   quantity INTEGER NOT NULL,
-  FOREIGN KEY (isbn) REFERENCES books (ISBN)
+  FOREIGN KEY (isbn) REFERENCES books (ISBN),
+  FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
 CREATE TABLE purchases_orders (
@@ -77,17 +79,19 @@ CREATE TABLE purchases_orders (
 );
 
 CREATE TABLE po_items (
-  po_id INTEGER NOT NULL,
+  purchase_id INTEGER NOT NULL,
   ISBN INTEGER NOT NULL,
   quantity INTEGER NOT NULL,
-  FOREIGN KEY (po_id) REFERENCES purchases_orders (purchase_id),
+  FOREIGN KEY (purchase_id) REFERENCES purchases_orders (purchase_id),
   FOREIGN KEY (ISBN) REFERENCES books (ISBN)
 );
 
 CREATE TABLE purchase_cart (
+  user_id INTEGER NOT NULL,
   isbn INTEGER NOT NULL,
   quantity INTEGER NOT NULL,
-  FOREIGN KEY (isbn) REFERENCES books (ISBN)
+  FOREIGN KEY (isbn) REFERENCES books (ISBN),
+  FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
 -- purchase 待簽收
