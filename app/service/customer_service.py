@@ -21,7 +21,11 @@ def get_total_pages(search_keyword, items_per_page=12):
         'SELECT COUNT(*) FROM books WHERE title LIKE ?',
         ('%' + search_keyword + '%',)
     ).fetchone()[0]
-    return total_pages//items_per_page + 1
+
+    if total_pages % items_per_page == 0:
+        return total_pages//items_per_page
+    else:
+        return total_pages//items_per_page + 1
 
 def add_to_cart(user_id, isbn, quantity):
     db = get_db()
