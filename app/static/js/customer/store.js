@@ -181,10 +181,16 @@ function updateBookList(book_list) {
     /* 添加訂購區域 */
     const bookOrder = document.createElement("div");
     bookOrder.classList.add("book-order");
+    
+    // 根據庫存狀態決定按鈕顏色和文字
+    const hasStock = parseInt(book.stock) > 0;
+    const buttonText = hasStock ? "加入購物車" : "預購";
+    const buttonClass = hasStock ? "order-btn" : "order-btn preorder-btn";
+    
     bookOrder.innerHTML = `
       <label for="order-quantity">購買數量:</label>
-      <input type="number" class="order-quantity" min="1" max="${book.stock}" value="1">
-      <button class="order-btn" data-isbn="${book.ISBN}">加入購物車</button>
+      <input type="number" class="order-quantity" min="1" max="${99}" value="1">
+      <button class="${buttonClass}" data-isbn="${book.ISBN}">${buttonText}</button>
     `;
     bookContent.appendChild(bookOrder);
     
@@ -197,7 +203,7 @@ function updateBookList(book_list) {
       if (orderBtn) {
         const isbn = orderBtn.dataset.isbn;
         const quantity = orderBtn.closest(".book-order").querySelector(".order-quantity").value;
-        console.log(`加入購物車 ISBN: ${isbn}, 數量: ${quantity}`);
+
         // 呼叫訂購函數
         addToCart(isbn, quantity);
       }
@@ -218,13 +224,19 @@ async function addToCart(isbn, quantity) {
       },
       body: JSON.stringify({ isbn, quantity })
     });
-    if (response.ok) {
-      alert("書籍加入購物車成功");
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      console.log(result.message || "書籍加入購物車成功");
+      alert(result.message || "書籍加入購物車成功");
     } else {
-      alert("書籍加入購物車失敗");
+      console.error(result.error || "書籍加入購物車失敗");
+      alert(result.error || "書籍加入購物車失敗");
     }
   } catch (error) {
     console.error("書籍加入購物車失敗:", error);
+    alert("書籍加入購物車失敗，請稍後再試");
   }
 }
 
