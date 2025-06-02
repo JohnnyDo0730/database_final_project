@@ -1,6 +1,6 @@
-from flask import render_template, request, session, redirect, url_for, flash
+from flask import render_template, request, session, redirect, url_for, flash, jsonify
 from app.route import customer_bp
-from app.service.customer_service import get_customer_profile_by_username, get_customer_profile_by_user_id
+from app.service.customer_service import get_customer_profile_by_username, get_customer_profile_by_user_id, get_book_list, get_total_pages, add_to_cart
 from app.service.user_service import get_user_by_username
 
 ''' 客戶頁面模板 '''
@@ -45,17 +45,51 @@ def customer_profile_page():
 
 
 ''' 客戶頁面功能 '''
-#書籍頁:搜尋
-@customer_bp.route('/customer/store/search', methods=['POST'])
-def customer_store_search():
-    raise NotImplementedError
-
+#書籍頁:獲取書籍列表
+@customer_bp.route('/customer/store/content')
+def customer_store_content():
+    search_keyword = request.args.get('search_keyword', '')
+    page = int(request.args.get('page', 1))
+    
+    try:
+        # 獲取符合關鍵字的書籍
+        books = get_book_list(search_keyword, page, items_per_page=12)
+        # 獲取總頁數
+        total_pages = get_total_pages(search_keyword, items_per_page=12)
+        
+        return jsonify({
+            'book_list': books,
+            'total_pages': total_pages
+        })
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'error': str(e)}), 500
 
 
 #書籍頁:商品加入購物車
 @customer_bp.route('/customer/store/add_to_cart', methods=['POST'])
 def customer_store_add_to_cart():
-    raise NotImplementedError
+    # 檢查用戶是否已登入
+    if not session.get('logged_in') or session.get('user_type') != 'customer':
+        return jsonify({'error': '請先登入'}), 401
+    
+    data = request.get_json()
+    isbn = data.get('isbn')
+    quantity = int(data.get('quantity', 1))
+    user_id = session.get('user_id')
+    
+    try:
+        if isbn is None or quantity is None:
+            return jsonify({'error': 'ISBN 或 數量不能為空'}), 400
+
+        # 將書籍加入購物車
+        add_to_cart(isbn, quantity)
+
+        # 返回成功訊息
+        return jsonify({'message': '書籍加入購物車成功'})
+    except Exception as e:
+        print(f"書籍加入購物車失敗: {e}")
+        return jsonify({'error': str(e)}), 500
 
 
 #購物車頁:商品移除購物車
