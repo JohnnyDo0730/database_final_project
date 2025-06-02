@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, session
 from app.route import backstage_bp
 from app.service.backstage_service import get_book_list, get_total_pages, add_to_cart
 
@@ -59,13 +59,19 @@ def backstage_book_content():
 def backstage_book_add_to_cart():
     # 獲取書籍ISBN、數量
     isbn = request.json.get('isbn')
-    quantity = request.json.get('quantity')
+    quantity = int(request.json.get('quantity'))
+
+    user_id = session.get('user_id')
+    user_type = session.get('user_type')
     try:
+        if user_type != 'staff':
+            return jsonify({'error': '非後台用戶'}), 403
+
         if isbn is None or quantity is None:
             return jsonify({'error': 'ISBN 或 數量不能為空'}), 400
 
         # 將書籍加入購物車
-        add_to_cart(isbn, quantity)
+        add_to_cart(user_id, isbn, quantity)
 
         # 返回成功訊息
         return jsonify({'message': '書籍加入購物車成功'})
