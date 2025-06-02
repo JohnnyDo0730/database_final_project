@@ -18,7 +18,7 @@ export function init() {
         submitOrderBtn.addEventListener('click', function() {
             console.log('結帳按鈕被點擊');
 
-            // 發送訂單 (未實現)
+            // 發送訂單
             sendOrder();
         });
     }
