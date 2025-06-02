@@ -1,4 +1,59 @@
 <div id="order-page" class="order-page">
     <h1>訂單查詢</h1>
-    <!-- 頁面內容將在這裡 -->
+    
+    <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>載入訂單中...</p>
+    </div>
+    
+    <div class="orders-container">
+        <!-- 訂單將被動態載入到這裡 -->
+        <div class="no-orders-message" style="display: none;">
+            <p>您目前還沒有任何訂單</p>
+        </div>
+    </div>
+    
+    <!-- 訂單項目範本 -->
+    <template id="order-template">
+        <div class="order-block">
+            <div class="order-header">
+                <div class="order-info">
+                    <h3>訂單編號: <span class="order-id"></span></h3>
+                    <p>訂單日期: <span class="order-date"></span></p>
+                    <p>訂單狀態: <span class="order-status"></span></p>
+                </div>
+                <div class="order-total">
+                    <p>訂單總金額: <span class="order-amount"></span> 元</p>
+                </div>
+            </div>
+            <div class="order-items">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>書名</th>
+                            <th>數量</th>
+                            <th>單價</th>
+                            <th>總價</th>
+                        </tr>
+                    </thead>
+                    <tbody class="items-container">
+                        <!-- 訂單項目將被動態載入到這裡 -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="order-actions">
+                <button class="return-btn" data-order-id="">申請退貨</button>
+            </div>
+        </div>
+    </template>
+    
+    <!-- 訂單項目範本 -->
+    <template id="order-item-template">
+        <tr class="order-item">
+            <td class="item-title"></td>
+            <td class="item-quantity"></td>
+            <td class="item-price"></td>
+            <td class="item-total"></td>
+        </tr>
+    </template>
 </div>

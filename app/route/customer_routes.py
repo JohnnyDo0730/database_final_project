@@ -1,6 +1,6 @@
 from flask import render_template, request, session, redirect, url_for, flash, jsonify
 from app.route import customer_bp
-from app.service.customer_service import get_customer_profile_by_username, get_customer_profile_by_user_id, get_book_list, get_total_pages, add_to_cart
+from app.service.customer_service import get_customer_profile_by_username, get_customer_profile_by_user_id, get_book_list, get_total_pages, add_to_cart, get_user_orders
 from app.service.user_service import get_user_by_username
 
 ''' 客戶頁面模板 '''
@@ -106,6 +106,23 @@ def customer_cart_remove_from_cart():
 def customer_cart_checkout():
     raise NotImplementedError
 
+
+#訂單頁:獲取訂單記錄
+@customer_bp.route('/customer/order_record/get_orders')
+def customer_order_record_get_orders():
+    # 獲取當前登入用戶的 user_id
+    user_id = session.get('user_id')
+    
+    try:
+        # 獲取該用戶的所有訂單
+        orders = get_user_orders(user_id)
+        return jsonify({
+            'success': True,
+            'orders': orders
+        })
+    except Exception as e:
+        print(f"獲取訂單記錄失敗: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 #訂單頁:退貨
 @customer_bp.route('/customer/order_record/return', methods=['POST'])
