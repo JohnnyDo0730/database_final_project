@@ -1,8 +1,6 @@
 from flask import render_template, request, session, redirect, url_for, flash, jsonify
 from app.route import customer_bp
-from app.service.customer_service import get_customer_profile_by_username, get_customer_profile_by_user_id, get_book_list, get_total_pages, add_to_cart
-from app.service.user_service import get_user_by_username
-
+from app.service.customer_service import *
 ''' 客戶頁面模板 '''
 @customer_bp.route('/customer')
 def customer_page():
@@ -95,16 +93,72 @@ def customer_store_add_to_cart():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
+#購物車頁：獲取購物車內容
+@customer_bp.route('/customer/cart/content', methods=['GET'])
+def customer_cart_content():
+    user_id = session.get('user_id')
+    user_type = session.get('user_type')
+
+    try:
+        if user_type != 'customer':
+            return jsonify({'error': '非顧客用戶'}), 403
+
+        # 獲取購物車內容
+        cart_content = get_cart_content(user_id)
+
+        # 返回購物車內容
+        return jsonify({'cart_content': cart_content})
+
+    except Exception as e:
+        print(f"獲取購物車內容失敗: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+#購物車頁:送出訂單
+@customer_bp.route('/customer/cart/submit')
+def customer_cart_submit():
+    user_id = session.get('user_id')
+    user_type = session.get('user_type')
+
+    try:
+        if user_type != 'customer':
+            return jsonify({'success': False, 'error': '非顧客用戶'}), 403
+        
+        # 發送訂單
+        success = send_order(user_id)
+
+        if not success:
+            return jsonify({'success': False, 'error': '購物車為空'}), 500
+        else:
+            # 返回成功訊息
+            return jsonify({'success': True, 'message': '訂單送出成功'})
+
+    except Exception as e:
+        print(f"訂單送出失敗: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
 #購物車頁:商品移除購物車
-@customer_bp.route('/customer/cart/remove_from_cart', methods=['POST'])
-def customer_cart_remove_from_cart():
-    raise NotImplementedError
+@customer_bp.route('/customer/cart/remove', methods=['POST'])
+def customer_cart_remove():
+    user_id = session.get('user_id')
+    user_type = session.get('user_type')
 
+    isbn = request.json.get('isbn')
 
-#購物車頁:結帳
-@customer_bp.route('/customer/cart/checkout', methods=['POST'])
-def customer_cart_checkout():
-    raise NotImplementedError
+    try:
+        if user_type != 'customer':
+            return jsonify({'error': '非顧客用戶'}), 403
+
+        # 移除購物車
+        remove_from_cart(user_id, isbn)
+
+        # 返回成功訊息
+        return jsonify({'message': '商品移除購物車成功'})
+
+    except Exception as e:
+        print(f"商品移除購物車失敗: {e}")
+        return jsonify({'error': str(e)}), 500
 
 
 #訂單頁:退貨
