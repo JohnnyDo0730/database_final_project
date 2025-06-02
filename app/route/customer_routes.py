@@ -78,18 +78,21 @@ def customer_store_add_to_cart():
     
     try:
         if user_type != 'customer':
-            return jsonify({'error': '非顧客用戶'}), 403
+            return jsonify({'success': False, 'error': '非顧客用戶'}), 403
         if isbn is None or quantity is None:
-            return jsonify({'error': 'ISBN 或 數量不能為空'}), 400
+            return jsonify({'success': False, 'error': 'ISBN 或 數量不能為空'}), 400
 
         # 將書籍加入購物車
-        add_to_cart(user_id, isbn, quantity)
+        isEnough = add_to_cart(user_id, isbn, quantity)
 
-        # 返回成功訊息
-        return jsonify({'message': '書籍加入購物車成功'})
+        if not isEnough:
+            return jsonify({'success': True, 'message': '庫存可能不足，已加入購物車與補貨清單'})
+        else:
+            return jsonify({'success': True, 'message': '書籍加入購物車成功'})
+
     except Exception as e:
         print(f"書籍加入購物車失敗: {e}")
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 
 #購物車頁:商品移除購物車
