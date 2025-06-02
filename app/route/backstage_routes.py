@@ -112,13 +112,12 @@ def backstage_purchase_cart_submit():
             return jsonify({'success': False, 'error': '非後台用戶'}), 403
         
         # 發送訂單
-        success = send_purchase_order(user_id)
+        result = send_purchase_order(user_id)
 
-        if not success:
-            return jsonify({'success': False, 'error': '購物車為空'}), 500
-        else:
-            # 返回成功訊息
+        if result['success']:
             return jsonify({'success': True, 'message': '訂單送出成功'})
+        else:
+            return jsonify({'success': False, 'error': result['message']}), 500
 
     except Exception as e:
         print(f"訂單送出失敗: {e}")

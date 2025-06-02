@@ -1,4 +1,5 @@
 from app.util.db import get_db
+from datetime import datetime
 
 ''' 書籍頁 '''
 def get_book_list(search_keyword, page, items_per_page=10):
@@ -100,22 +101,53 @@ def send_purchase_order(user_id):
                 (user_id,)
             )
 
-            # 建立訂單紀錄(未實現)
+            # 建立訂單紀錄
+            add_to_purchase_order(user_id, book_list, need_commit=False)
 
             db.commit()
 
-            # 返回成功訊息
-            print(f"訂單送出成功")
-            return True
+            return {"success": True, "message": "訂單建立成功"}
         else:
             # 如果購物車沒有商品，則返回錯誤訊息
-            print(f"購物車沒有商品")
-            return False
+            return {"success": False, "message": "購物車沒有商品"}
 
     except Exception as e:
         print(f"訂單送出失敗: {e}")
         db.rollback()
-        return False
+        return {"success": False, "message": "訂單送出失敗"}
+
+def add_to_purchase_order(user_id, book_list, need_commit=True):
+    db = get_db()
+
+    try:
+
+        # 建立訂單紀錄
+        db.execute(
+            'INSERT INTO purchases_orders (user_id, purchase_date) VALUES (?, ?)',
+            (user_id, datetime.now())
+        )
+
+        # 取得訂單編號
+        order_id = db.execute(
+            'SELECT last_insert_rowid()'
+        ).fetchone()[0]
+
+        # 建立訂單項目紀錄
+        for book in book_list:
+            db.execute(
+                'INSERT INTO po_items (purchase_id, isbn, quantity) VALUES (?, ?, ?)',
+                (order_id, book['isbn'], book['quantity'])
+            )
+
+        if need_commit:
+            db.commit()
+
+        print(f"訂單建立成功，訂單編號: {order_id}")
+        return {"success": True, "message": "訂單建立成功"}
+    except Exception as e:
+        db.rollback()
+        print(f"建立訂單時發生錯誤: {e}")
+        raise e
 
 def remove_from_purchase_cart(user_id, isbn):
     db = get_db()
