@@ -1,1 +1,154 @@
-/* 購物車管理頁面樣式 */ 
+/* 購物車管理頁面樣式 */
+
+.purchase-cart-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: "微軟正黑體", Arial, sans-serif;
+}
+
+.purchase-cart-page h1 {
+    color: #333;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* 載入指示器 */
+.loading-indicator {
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    color: #666;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* 錯誤訊息 */
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border-left: 4px solid #c62828;
+}
+
+/* 購物車容器 */
+.cart-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.cart-container h2 {
+    color: #444;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+/* 購物車為空提示 */
+.no-results {
+    text-align: center;
+    padding: 30px;
+    color: #888;
+    font-size: 18px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+/* 書籍區塊 */
+.book-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.book-block:last-child {
+    border-bottom: none;
+}
+
+.book-block:hover {
+    background-color: #f5f5f5;
+}
+
+/* 書籍資訊 */
+.book-info {
+    flex: 1;
+}
+
+.book-title {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.quantity {
+    color: #666;
+    font-size: 15px;
+}
+
+.quantity-value {
+    font-weight: bold;
+    color: #444;
+}
+
+/* 移除按鈕區域 */
+.book-remove {
+    margin-left: 20px;
+}
+
+.remove-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.remove-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* 結帳按鈕容器 */
+.checkout-container {
+    text-align: right;
+    padding: 10px 0;
+}
+
+.submit-order-btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-order-btn:hover {
+    background-color: #388e3c;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .book-block {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .book-remove {
+        margin-left: 0;
+        margin-top: 10px;
+        align-self: flex-end;
+    }
+} 

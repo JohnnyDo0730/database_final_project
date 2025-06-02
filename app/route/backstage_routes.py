@@ -1,6 +1,6 @@
 from flask import render_template, request, jsonify, session
 from app.route import backstage_bp
-from app.service.backstage_service import get_book_list, get_total_pages, add_to_cart
+from app.service.backstage_service import get_book_list, get_total_pages, add_to_cart, get_cart_content, send_purchase_order, remove_from_purchase_cart
 
 ''' 後台頁面模板 '''
 @backstage_bp.route('/backstage')
@@ -80,16 +80,73 @@ def backstage_book_add_to_cart():
         return jsonify({'error': str(e)}), 500
 
 
+#購物車頁：獲取購物車內容
+@backstage_bp.route('/backstage/purchase_cart/content', methods=['GET'])
+def backstage_purchase_cart_content():
+    user_id = session.get('user_id')
+    user_type = session.get('user_type')
+
+    try:
+        if user_type != 'staff':
+            return jsonify({'error': '非後台用戶'}), 403
+
+        # 獲取購物車內容
+        cart_content = get_cart_content(user_id)
+
+        # 返回購物車內容
+        return jsonify({'cart_content': cart_content})
+
+    except Exception as e:
+        print(f"獲取購物車內容失敗: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
 #購物車頁:送出訂單
-@backstage_bp.route('/backstage/purchase_cart/submit', methods=['POST'])
+@backstage_bp.route('/backstage/purchase_cart/submit')
 def backstage_purchase_cart_submit():
-    raise NotImplementedError
+    user_id = session.get('user_id')
+    user_type = session.get('user_type')
+
+    try:
+        if user_type != 'staff':
+            return jsonify({'success': False, 'error': '非後台用戶'}), 403
+        
+        # 發送訂單
+        success = send_purchase_order(user_id)
+
+        if not success:
+            return jsonify({'success': False, 'error': '購物車為空'}), 500
+        else:
+            # 返回成功訊息
+            return jsonify({'success': True, 'message': '訂單送出成功'})
+
+    except Exception as e:
+        print(f"訂單送出失敗: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 
 #購物車頁:商品移除購物車
 @backstage_bp.route('/backstage/purchase_cart/remove', methods=['POST'])
 def backstage_purchase_cart_remove():
-    raise NotImplementedError
+    user_id = session.get('user_id')
+    user_type = session.get('user_type')
+
+    isbn = request.json.get('isbn')
+
+    try:
+        if user_type != 'staff':
+            return jsonify({'error': '非後台用戶'}), 403
+
+        # 移除購物車
+        remove_from_purchase_cart(user_id, isbn)
+
+        # 返回成功訊息
+        return jsonify({'message': '商品移除購物車成功'})
+
+    except Exception as e:
+        print(f"商品移除購物車失敗: {e}")
+        return jsonify({'error': str(e)}), 500
+
 
 
 #退貨頁:同意退貨
