@@ -203,11 +203,18 @@ def add_to_order(user_id, book_list, need_commit=True):
             'SELECT last_insert_rowid()'
         ).fetchone()[0]
 
-        # 建立訂單項目紀錄
+        # 處理每本書
         for book in book_list:
+            # 建立訂單項目紀錄
             db.execute(
                 'INSERT INTO order_items (order_id, isbn, quantity) VALUES (?, ?, ?)',
                 (order_id, book['isbn'], book['quantity'])
+            )
+
+            # 更新庫存
+            db.execute(
+                'UPDATE books SET stock = stock - ? WHERE isbn = ?',
+                (book['quantity'], book['isbn'])
             )
 
         if need_commit:
