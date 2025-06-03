@@ -148,16 +148,78 @@ def backstage_purchase_cart_remove():
 
 
 
+#退貨頁:獲取退貨訂單
+@backstage_bp.route('/backstage/return/get_returns')
+def backstage_return_get_returns():
+    user_type = session.get('user_type')
+    
+    try:
+        if user_type != 'staff':
+            return jsonify({'success': False, 'error': '非後台用戶'}), 403
+            
+        # 獲取退貨訂單
+        result = get_return_orders()
+        
+        return jsonify({
+            'success': True,
+            'returns': result
+        })
+            
+    except Exception as e:
+        print(f"獲取退貨訂單失敗: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 #退貨頁:同意退貨
 @backstage_bp.route('/backstage/return/confirm', methods=['POST'])
 def backstage_return_confirm():
-    raise NotImplementedError
+    user_type = session.get('user_type')
+    order_id = request.json.get('order_id')
+    
+    try:
+        if user_type != 'staff':
+            return jsonify({'success': False, 'error': '非後台用戶'}), 403
+            
+        if not order_id:
+            return jsonify({'success': False, 'error': '訂單編號不能為空'}), 400
+            
+        # 確認退貨
+        result = confirm_return(order_id)
+        
+        if result['success']:
+            return jsonify({'success': True, 'message': result['message']})
+        else:
+            return jsonify({'success': False, 'error': result['message']}), 500
+            
+    except Exception as e:
+        print(f"確認退貨失敗: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 
 #退貨頁:拒絕退貨
 @backstage_bp.route('/backstage/return/reject', methods=['POST'])
 def backstage_return_reject():
-    raise NotImplementedError
+    user_type = session.get('user_type')
+    order_id = request.json.get('order_id')
+    reason = request.json.get('reason', '')
+    
+    try:
+        if user_type != 'staff':
+            return jsonify({'success': False, 'error': '非後台用戶'}), 403
+            
+        if not order_id:
+            return jsonify({'success': False, 'error': '訂單編號不能為空'}), 400
+            
+        # 拒絕退貨
+        result = reject_return(order_id, reason)
+        
+        if result['success']:
+            return jsonify({'success': True, 'message': result['message']})
+        else:
+            return jsonify({'success': False, 'error': result['message']}), 500
+            
+    except Exception as e:
+        print(f"拒絕退貨失敗: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 
 #訂單頁:獲取訂單記錄
