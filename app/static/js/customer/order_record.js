@@ -104,14 +104,47 @@ function updateOrderList(order_list) {
                 </table>
             </div>
             <div class="order-actions">
-                <button class="return-btn" data-order-id="${escapeHtml(order.order_id)}">申請退貨</button>
+                <button class="return-btn" data-order-id="${escapeHtml(order.order_id)}" ${order.order_status == '已送達，不接受退貨(超過7天鑑賞期)' || order.order_status == '退貨中' ? 'disabled' : ''}>申請退貨</button>
             </div>
     `;
+    //監聽退貨按鈕
+    const returnBtn = orderBlock.querySelector('.return-btn');
+    if (returnBtn) {
+      returnBtn.addEventListener('click', () => {
+        if (returnBtn.disabled) {
+          alert('此訂單不接受退貨');
+          return;
+        }
+        console.log('退貨按鈕被點擊');
+        // 發送退貨申請
+        sendReturnRequest(returnBtn.dataset.orderId);
+      });
+    }
     
     ordersContainer.appendChild(orderBlock);
   });
 }
 
+
+async function sendReturnRequest(orderId) {
+  console.log('受理退貨申請:', orderId);
+  const response = await fetch('/customer/order_record/return', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ order_id: orderId })
+  });
+  const data = await response.json();
+  if (data.success) {
+    console.log(data.message);
+    alert(data.message);
+  } else {
+    console.log(data.error);
+    alert(data.error);
+  }
+  updatePage();
+}
 
 // 格式化日期
 function formatDate(dateString) {
@@ -136,39 +169,6 @@ function translateOrderStatus(status) {
   };
 
   return statusMap[status] || status;
-}
-
-
-// 退貨函數
-async function returnOrder(orderId) {
-  // 退貨功能目前還未實現
-  alert(`退貨功能開發中，訂單編號: ${orderId}`);
-
-  // 退貨功能實現後的代碼如下：
-  /*
-  try {
-      const response = await fetch('/customer/order_record/return', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ order_id: orderId })
-      });
-      
-      const data = await response.json();
-      
-      if (data.success) {
-          alert('退貨申請已提交，待審核');
-          // 重新載入訂單資料
-          fetchOrderData();
-      } else {
-          alert(`退貨申請失敗: ${data.error || '未知錯誤'}`);
-      }
-  } catch (error) {
-      console.error('退貨申請發生錯誤:', error);
-      alert('無法連接到伺服器，請稍後再試');
-  }
-  */
 }
 
 
