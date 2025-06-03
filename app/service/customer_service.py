@@ -8,6 +8,11 @@ def update_book_restock(isbn, need_commit=True):
         'SELECT stock FROM books WHERE ISBN = ?',
         (isbn,)
     ).fetchone()
+
+    book_purchasing = db.execute(
+        'SELECT SUM(quantity) FROM po_items WHERE isbn = ?',
+        (isbn,)
+    ).fetchone()
     
     book_required = db.execute(
         'SELECT SUM(quantity) FROM cart WHERE isbn = ?',
@@ -17,7 +22,7 @@ def update_book_restock(isbn, need_commit=True):
     if book_required[0] is None:
         book_required = [0]
 
-    isEnough = book_required[0] <= book_stock[0]
+    isEnough = book_required[0] <= book_stock[0] + book_purchasing[0]
     if not isEnough:
         # 庫存不足，加入補貨清單
         db.execute(

@@ -1,1 +1,224 @@
 /* 採購記錄頁面樣式 */ 
+
+.purchase-record-page {
+    font-family: 'Noto Sans TC', sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.purchase-record-page h1 {
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 2em;
+}
+
+/* 載入動畫 */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.loading-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 訂單容器 */
+.orders-container {
+    display: block;
+}
+
+.no-orders-message {
+    text-align: center;
+    padding: 40px 0;
+    color: #666;
+    font-size: 1.2em;
+}
+
+/* 訂單區塊 */
+.order-block {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.order-header {
+    background-color: #f9f9f9;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #eee;
+}
+
+.order-info {
+    flex: 1;
+}
+
+.order-info h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 1.2em;
+}
+
+.order-info p {
+    margin: 8px 0;
+    color: #666;
+    display: flex;
+    align-items: center;
+}
+
+.order-info p span {
+    margin-left: 5px;
+    font-weight: 500;
+}
+
+.order-total {
+    text-align: right;
+    background-color: #f8f8f8;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-left: 20px;
+    min-width: 180px;
+}
+
+.order-total p {
+    margin: 0;
+    font-weight: bold;
+    color: #e74c3c;
+    font-size: 1.1em;
+}
+
+/* 訂單項目表格 */
+.order-items {
+    padding: 20px;
+}
+
+.order-items table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.order-items th, .order-items td {
+    text-align: center;
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+    color: #555;
+}
+
+.order-items th {
+    border-bottom: 2px solid #eee;
+    color: #333;
+    font-weight: 600;
+    background-color: #f9f9f9;
+}
+
+.order-items th:first-child, .order-items td:first-child {
+    text-align: left;
+    width: 40%;
+}
+
+.order-items th:nth-child(2), .order-items td:nth-child(2) {
+    width: 15%;
+}
+
+.order-items th:nth-child(3), .order-items td:nth-child(3) {
+    width: 20%;
+}
+
+.order-items th:nth-child(4), .order-items td:nth-child(4) {
+    width: 25%;
+}
+
+.order-items tr:last-child td {
+    border-bottom: none;
+}
+
+.item-title {
+    font-weight: 500;
+    padding-left: 5px;
+}
+
+.item-total {
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+/* 訂單動作區 */
+.order-actions {
+    padding: 15px 20px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+    text-align: right;
+}
+
+.sign-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sign-btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sign-btn:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+.sign-btn:disabled:hover {
+    background-color: #bdc3c7;
+    transform: none;
+    box-shadow: none;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .order-total {
+        margin-top: 10px;
+    }
+
+    .order-items table {
+        font-size: 0.9em;
+    }
+
+    .item-title {
+        max-width: 200px;
+    }
+}

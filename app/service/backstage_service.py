@@ -120,11 +120,10 @@ def add_to_purchase_order(user_id, book_list, need_commit=True):
     db = get_db()
 
     try:
-
         # 建立訂單紀錄
         db.execute(
-            'INSERT INTO purchases_orders (user_id, purchase_date) VALUES (?, ?)',
-            (user_id, datetime.now())
+            'INSERT INTO purchases_orders (user_id, purchase_date, purchase_status) VALUES (?, ?, ?)',
+            (user_id, datetime.now().strftime('%Y-%m-%d'), '已申請')
         )
 
         # 取得訂單編號
@@ -168,5 +167,79 @@ def remove_from_purchase_cart(user_id, isbn):
         return False
 
 
+''' 訂單查詢頁 '''
+def get_purchase_orders():
 
-''' 簽收 ''' # 簽收需要更新庫存、檢查補貨清單
+    db = get_db()
+    try:
+        # 獲取所有訂單
+        orders = db.execute(
+            'SELECT user_id, purchase_id, purchase_date, purchase_status FROM purchases_orders ORDER BY purchase_date DESC',
+        ).fetchall()
+
+        # 將結果轉換為字典列表
+        orders_list = []
+
+        for order in orders:
+            order_dict = dict(order)
+
+            # 獲取該訂單的所有項目
+            order_items = db.execute(
+                'SELECT oi.isbn, oi.quantity, b.title, b.price ' 
+                'FROM po_items oi '
+                'JOIN books b ON oi.isbn = b.isbn '
+                'WHERE oi.purchase_id = ?',
+                (order_dict['purchase_id'],)
+            ).fetchall()
+
+            # 計算訂單總金額
+            total_amount = 0
+            items_list = []
+
+            for item in order_items:
+                item_dict = dict(item)
+                # 計算該項目總價
+                item_dict['total_price'] = item_dict['quantity'] * item_dict['price']
+                total_amount += item_dict['total_price']
+                items_list.append(item_dict)
+
+            # 將項目列表添加到訂單中
+            order_dict['items'] = items_list
+            order_dict['total_amount'] = total_amount
+
+            orders_list.append(order_dict)
+
+        return {"success": True, "orders": orders_list}
+    except Exception as e:
+        print(f"獲取訂單資料時發生錯誤: {e}")
+        return {"success": False, "message": "獲取訂單資料時發生錯誤"}
+
+def sign_purchase_order(purchase_id):
+    print(f"受理簽收: {purchase_id}")
+    db = get_db()
+    try:
+        db.execute(
+            'UPDATE purchases_orders SET purchase_status = "已簽收" WHERE purchase_id = ?',
+            (purchase_id,)
+        )
+
+        # 更新庫存
+        order_items = db.execute(
+            'SELECT isbn, quantity FROM po_items WHERE purchase_id = ?',
+            (purchase_id,)
+        ).fetchall()
+        for item in order_items:
+            db.execute(
+                'UPDATE books SET stock = stock + ? WHERE isbn = ?',
+                (item['quantity'], item['isbn'])
+            )
+
+        db.commit()
+        return {"success": True, "message": "簽收成功"}
+    except Exception as e:
+        print(f"簽收時發生錯誤: {e}")
+        db.rollback()
+        return {"success": False, "message": "簽收時發生錯誤"}
+
+
+''' 補貨 ''' # 加入購物車後需要移除補貨清單
