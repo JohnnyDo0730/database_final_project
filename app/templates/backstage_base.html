@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
     <!-- 載入全部子頁CSS-->
-    {% for page in ['book', 'purchase_cart', 'return', 'reorder', 'purchase_record'] %}
+    {% for page in ['book', 'purchase_cart', 'return', 'restock', 'purchase_record'] %}
         <link rel="stylesheet" href="{{ url_for('static', filename='css/backstage/' + page + '.css') }}">
     {% endfor %}
 </head>
@@ -38,7 +38,7 @@
                 <button class="nav-item" data-page="return">退貨管理</button>
             </li>
             <li>
-                <button class="nav-item" data-page="reorder">補貨管理</button>
+                <button class="nav-item" data-page="restock">補貨管理</button>
             </li>
             <li>
                 <button class="nav-item" data-page="purchase_record">採購記錄</button>

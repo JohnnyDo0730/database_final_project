@@ -24,9 +24,9 @@ def backstage_return_page():
     return render_template('backstage/return.html')
 
 #後台補貨頁面
-@backstage_bp.route('/backstage/reorder')
-def backstage_reorder_page():
-    return render_template('backstage/reorder.html')
+@backstage_bp.route('/backstage/restock')
+def backstage_restock_page():
+    return render_template('backstage/restock.html')
 
 #後台採購紀錄頁面
 @backstage_bp.route('/backstage/purchase_record')
@@ -160,13 +160,6 @@ def backstage_return_reject():
     raise NotImplementedError
 
 
-#補貨頁:加入購物車
-@backstage_bp.route('/backstage/reorder/add_to_cart', methods=['POST'])
-def backstage_reorder_add_to_cart():
-    raise NotImplementedError
-
-
-
 #訂單頁:獲取訂單記錄
 @backstage_bp.route('/backstage/purchase_record/get_orders')
 def backstage_purchase_record_get_orders():
@@ -194,6 +187,27 @@ def backstage_purchase_record_get_orders():
 def backstage_purchase_record_sign():
     order_id = request.json.get('order_id')
     result = sign_purchase_order(order_id)
+    if result['success']:
+        return jsonify({'success': True, 'message': result['message']})
+    else:
+        return jsonify({'success': False, 'error': result['message']}), 500
+
+
+#補貨頁:獲取補貨清單
+@backstage_bp.route('/backstage/restock/get_restock_list')
+def backstage_restock_get_restock_list():
+    result = get_restock_list()
+    if result['success']:
+        return jsonify({'success': True, 'restock_list': result['restock_list']})
+    else:
+        return jsonify({'success': False, 'error': result['message']}), 500
+
+
+#補貨頁:加入購物車
+@backstage_bp.route('/backstage/restock/add_to_cart', methods=['POST'])
+def backstage_restock_add_to_cart():
+    isbn = request.json.get('isbn')
+    result = add_to_purchase_cart_restock(isbn)
     if result['success']:
         return jsonify({'success': True, 'message': result['message']})
     else:

@@ -1,0 +1,100 @@
+/* 補貨管理頁面樣式 */
+
+/* 補貨頁面整體布局 */
+.restock-page {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 120px); /* 減去頂部導航欄和padding的高度 */
+    gap: 1rem;
+}
+
+/* 補貨清單顯示區域樣式 - 可滾動 */
+.restock-container {
+    flex: 1; /* 佔據剩餘空間 */
+    overflow-y: auto; /* 啟用垂直滾動 */
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 1rem;
+    background-color: #f8f9fa;
+}
+
+/* 補貨項目樣式 */
+.restock-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.restock-info {
+    flex: 1;
+}
+
+.restock-info p {
+    margin-bottom: 0.25rem;
+    color: #666;
+}
+
+.restock-actions {
+    display: flex;
+    justify-content: flex-end;
+    min-width: 150px;
+}
+
+.add-to-cart-btn {
+    padding: 0.5rem 1rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #218838;
+}
+
+/* 載入中和錯誤提示 */
+.loading-indicator {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    display: none;
+}
+
+/* 無補貨項目提示 */
+.no-restock-message {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .restock-item {
+        flex-direction: column;
+    }
+    
+    .restock-actions {
+        align-items: flex-start;
+        margin-top: 1rem;
+        width: 100%;
+    }
+    
+    .add-to-cart-btn {
+        width: 100%;
+    }
+} 
