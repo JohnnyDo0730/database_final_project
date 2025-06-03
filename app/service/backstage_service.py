@@ -1,5 +1,7 @@
 from app.util.db import get_db
 from datetime import datetime
+from flask import session
+
 
 ''' 書籍頁 '''
 def get_book_list(search_keyword, page, items_per_page=10):
@@ -174,7 +176,7 @@ def get_purchase_orders():
     try:
         # 獲取所有訂單
         orders = db.execute(
-            'SELECT user_id, purchase_id, purchase_date, purchase_status FROM purchases_orders ORDER BY purchase_date DESC',
+            'SELECT user_id, purchase_id, purchase_date, purchase_status FROM purchases_orders ORDER BY purchase_id DESC',
         ).fetchall()
 
         # 將結果轉換為字典列表
@@ -243,3 +245,58 @@ def sign_purchase_order(purchase_id):
 
 
 ''' 補貨 ''' # 加入購物車後需要移除補貨清單
+def get_restock_list():
+    db = get_db()
+    try:
+        restock_list = db.execute(
+            'SELECT r.isbn, r.quantity, b.title FROM restock as r JOIN books as b ON r.isbn = b.isbn',
+        ).fetchall()
+        restock_list_dict = [dict(row) for row in restock_list]
+        return {"success": True, "restock_list": restock_list_dict}
+    except Exception as e:
+        print(f"獲取補貨清單時發生錯誤: {e}")
+        return {"success": False, "message": "獲取補貨清單時發生錯誤"}
+
+def add_to_purchase_cart_restock(isbn):
+    db = get_db()
+    try:
+        # 檢查是否在補貨清單
+        restock_list = db.execute(
+            'SELECT isbn, quantity FROM restock WHERE isbn = ?',
+            (isbn,)
+        ).fetchone()
+        if not restock_list:
+            raise Exception("補貨清單不存在")
+
+        # 先檢查是否已有這本書在購物車
+        existing = db.execute(
+            'SELECT quantity FROM purchase_cart WHERE isbn = ?',
+            (isbn,)
+        ).fetchone()
+        
+        user_id = session.get('user_id')
+        if existing:
+            # 如果已存在，則更新數量
+            db.execute(
+                'UPDATE purchase_cart SET quantity = quantity + ? WHERE isbn = ? AND user_id = ?',
+                (restock_list['quantity'], isbn, user_id)
+            )
+        else:
+            # 如果不存在，則新增
+            db.execute(
+                'INSERT INTO purchase_cart (isbn, quantity, user_id) VALUES (?, ?, ?)',
+                (isbn, restock_list['quantity'], user_id)
+            )
+
+        # 刪除補貨清單 
+        db.execute(
+                'DELETE FROM restock WHERE isbn = ?',
+                (isbn,)
+        )
+        db.commit()
+        return {"success": True, "message": "補貨清單已移到購物車"}
+        
+    except Exception as e:
+        print(f"加入購物車時發生錯誤: {e}")
+        db.rollback()
+        return {"success": False, "message": "加入購物車時發生錯誤"}
