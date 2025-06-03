@@ -244,6 +244,135 @@ def sign_purchase_order(purchase_id):
         return {"success": False, "message": "簽收時發生錯誤"}
 
 
+''' 退貨頁 '''
+def get_return_orders(user_name=None):
+    db = get_db()
+    try:
+        # 獲取退貨中的訂單
+        return_orders = db.execute("""
+            SELECT order_id, order_date, order_status, user_id
+            FROM orders
+            WHERE order_status = '退貨中'
+            ORDER BY order_date DESC
+        """).fetchall()
+        
+        result = []
+        for order in return_orders:
+            order_dict = dict(order)
+            
+            # 獲取訂單項目
+            order_items = db.execute("""
+                SELECT oi.isbn, oi.quantity, b.title, b.price
+                FROM order_items oi
+                JOIN books b ON oi.isbn = b.isbn
+                WHERE oi.order_id = ?
+            """, (order_dict['order_id'],)).fetchall()
+            
+            # 計算訂單總金額
+            total_amount = 0
+            items_list = []
+            
+            for item in order_items:
+                item_dict = dict(item)
+                # 計算該項目總價
+                item_dict['total_price'] = item_dict['quantity'] * item_dict['price']
+                total_amount += item_dict['total_price']
+                items_list.append(item_dict)
+                
+            # 將項目列表添加到訂單中
+            order_dict['items'] = items_list
+            order_dict['total_amount'] = total_amount
+            
+            result.append(order_dict)
+            
+        return result
+    except Exception as e:
+        print(f"獲取退貨訂單時發生錯誤: {e}")
+        return []
+
+def confirm_return(order_id):
+    db = get_db()
+    try:
+        # 確認退貨前檢查訂單狀態和用戶信息
+        order = db.execute(
+            'SELECT o.order_id, o.order_status, o.user_id FROM orders o WHERE o.order_id = ?',
+            (order_id,)
+        ).fetchone()
+        
+        if not order:
+            return {"success": False, "message": "訂單不存在"}
+            
+        if order['order_status'] != '退貨中':
+            return {"success": False, "message": "該訂單不是退貨中狀態"}
+        
+        # 計算訂單總金額
+        order_items = db.execute(
+            'SELECT oi.isbn, oi.quantity, b.price FROM order_items oi '
+            'JOIN books b ON oi.isbn = b.isbn '
+            'WHERE oi.order_id = ?',
+            (order_id,)
+        ).fetchall()
+        
+        total_refund = 0
+        for item in order_items:
+            item_total = item['quantity'] * item['price']
+            total_refund += item_total
+            
+            # 更新庫存
+            db.execute(
+                'UPDATE books SET stock = stock + ? WHERE isbn = ?',
+                (item['quantity'], item['isbn'])
+            )
+        
+        # 更新訂單狀態為已退貨
+        db.execute(
+            'UPDATE orders SET order_status = "已退貨" WHERE order_id = ?',
+            (order_id,)
+        )
+        
+        # 更新客戶餘額
+        db.execute(
+            'UPDATE customer SET balance = balance + ? WHERE user_id = ?',
+            (total_refund, order['user_id'])
+        )
+        
+        print(f"退款金額: {total_refund} 元已加到用戶 {order['user_id']} 的帳戶餘額")
+        
+        db.commit()
+        return {"success": True, "message": "退貨已確認，退款已加到客戶帳戶"}
+    except Exception as e:
+        print(f"確認退貨時發生錯誤: {e}")
+        db.rollback()
+        return {"success": False, "message": "確認退貨時發生錯誤"}
+        
+def reject_return(order_id, reason=''):
+    db = get_db()
+    try:
+        # 拒絕退貨前檢查訂單狀態
+        order = db.execute(
+            'SELECT order_status FROM orders WHERE order_id = ?',
+            (order_id,)
+        ).fetchone()
+        
+        if not order:
+            return {"success": False, "message": "訂單不存在"}
+            
+        if order['order_status'] != '退貨中':
+            return {"success": False, "message": "該訂單不是退貨中狀態"}
+        
+        # 更新訂單狀態為已完成
+        db.execute(
+            'UPDATE orders SET order_status = "已完成" WHERE order_id = ?',
+            (order_id,)
+        )
+        
+        db.commit()
+        return {"success": True, "message": "退貨已拒絕"}
+    except Exception as e:
+        print(f"拒絕退貨時發生錯誤: {e}")
+        db.rollback()
+        return {"success": False, "message": "拒絕退貨時發生錯誤"}
+
 ''' 補貨 ''' # 加入購物車後需要移除補貨清單
 def get_restock_list():
     db = get_db()
