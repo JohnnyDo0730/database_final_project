@@ -189,6 +189,11 @@ def customer_order_record_get_orders():
 #訂單頁:退貨
 @customer_bp.route('/customer/order_record/return', methods=['POST'])
 def customer_order_record_return():
-    raise NotImplementedError
+    order_id = request.json.get('order_id')
+    result = return_order(order_id)
+    if result['success']:
+        return jsonify({'success': True, 'message': result['message']})
+    else:
+        return jsonify({'success': False, 'error': result['message']}), 500
 
 

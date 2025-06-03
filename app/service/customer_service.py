@@ -1,5 +1,5 @@
 from app.util.db import get_db
-from datetime import datetime
+from datetime import datetime, timedelta
 
 ''' 通用 '''
 def update_book_restock(isbn, need_commit=True):
@@ -194,8 +194,8 @@ def add_to_order(user_id, book_list, need_commit=True):
 
         # 建立訂單紀錄
         db.execute(
-            'INSERT INTO orders (user_id, order_date) VALUES (?, ?)',
-            (user_id, datetime.now().strftime('%Y-%m-%d'))
+            'INSERT INTO orders (user_id, order_date, order_status) VALUES (?, ?, ?)',
+            (user_id, datetime.now().strftime('%Y-%m-%d'), '已送達')
         )
 
         # 取得訂單編號
@@ -206,8 +206,8 @@ def add_to_order(user_id, book_list, need_commit=True):
         # 建立訂單項目紀錄
         for book in book_list:
             db.execute(
-                'INSERT INTO order_items (order_id, isbn, quantity, order_status) VALUES (?, ?, ?, ?)',
-                (order_id, book['isbn'], book['quantity'], '待簽收')
+                'INSERT INTO order_items (order_id, isbn, quantity) VALUES (?, ?, ?)',
+                (order_id, book['isbn'], book['quantity'])
             )
 
         if need_commit:
@@ -260,6 +260,19 @@ def get_user_orders(user_id):
         for order in orders:
             order_dict = dict(order)
 
+            # 檢查下單日期是否超過7天
+            #資料庫中的格式:datetime.now().strftime('%Y-%m-%d'),type:datetime.date
+            order_date = datetime.strptime(str(order_dict['order_date']), '%Y-%m-%d')
+            print("order_date:",order_date)
+            print("datetime.now() - timedelta(days=7):",datetime.now() - timedelta(days=7))
+            if order_date < datetime.now() - timedelta(days=7):
+                order_dict['order_status'] = '已送達，不接受退貨(超過7天鑑賞期)'
+                db.execute(
+                    'UPDATE orders SET order_status = ? WHERE order_id = ?',
+                    (order_dict['order_status'], order_dict['order_id'])
+                )
+                db.commit()
+
             # 獲取該訂單的所有項目
             order_items = db.execute(
                 'SELECT oi.ISBN, oi.quantity, b.title, b.price ' 
@@ -291,6 +304,20 @@ def get_user_orders(user_id):
         print(f"獲取訂單資料時發生錯誤: {e}")
         return {"success": False, "message": "獲取訂單資料時發生錯誤"}
 
+def return_order(order_id):
+    print(f"受理退貨申請: {order_id}")
+    db = get_db()
+    try:
+        db.execute(
+            'UPDATE orders SET order_status = "退貨中" WHERE order_id = ?',
+            (order_id,)
+        )
+        db.commit()
+        return {"success": True, "message": "退貨申請已提交，待審核"}
+    except Exception as e:
+        print(f"退貨申請時發生錯誤: {e}")
+        db.rollback()
+        return {"success": False, "message": "退貨申請時發生錯誤"}
 
 
 ''' 客戶資訊頁 '''
