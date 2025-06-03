@@ -46,6 +46,7 @@ CREATE TABLE books (
   publish_date DATE NOT NULL
 );
 
+-- 訂單: 已送達,已送達，不接受退貨(超過7天鑑賞期),退貨中, 已退貨
 CREATE TABLE orders (
   order_id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER NOT NULL,
@@ -70,6 +71,7 @@ CREATE TABLE cart (
   FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
+-- 採購訂單: 已申請,已簽收
 CREATE TABLE purchases_orders (
   purchase_id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER NOT NULL,

@@ -166,7 +166,35 @@ def backstage_reorder_add_to_cart():
     raise NotImplementedError
 
 
+
+#訂單頁:獲取訂單記錄
+@backstage_bp.route('/backstage/purchase_record/get_orders')
+def backstage_purchase_record_get_orders():
+
+    try:
+        # 獲取該用戶的所有訂單
+        result = get_purchase_orders()
+        if result['success']:
+            return jsonify({
+                'success': True,
+                'orders': result['orders']
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'error': result['message']
+            }), 500
+    except Exception as e:
+        print(f"獲取訂單記錄失敗: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+        
 #採購紀錄頁:簽收
 @backstage_bp.route('/backstage/purchase_record/sign', methods=['POST'])
 def backstage_purchase_record_sign():
-    raise NotImplementedError
+    order_id = request.json.get('order_id')
+    result = sign_purchase_order(order_id)
+    if result['success']:
+        return jsonify({'success': True, 'message': result['message']})
+    else:
+        return jsonify({'success': False, 'error': result['message']}), 500
