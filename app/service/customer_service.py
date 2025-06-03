@@ -22,6 +22,9 @@ def update_book_restock(isbn, need_commit=True):
     if book_required[0] is None:
         book_required = [0]
 
+    if book_purchasing[0] is None:
+        book_purchasing = [0]
+
     isEnough = book_required[0] <= book_stock[0] + book_purchasing[0]
     if not isEnough:
         # 庫存不足，加入補貨清單
@@ -120,7 +123,7 @@ def get_cart_content(user_id):
 
     # 使用 JOIN 一次取得 isbn、quantity 與書名 title
     cart_content = db.execute('''
-        SELECT c.isbn, c.quantity, b.title
+        SELECT c.isbn, c.quantity, b.title, b.stock
         FROM cart c
         JOIN books b ON c.isbn = b.isbn
         WHERE c.user_id = ?
@@ -262,7 +265,7 @@ def get_user_orders(user_id):
     try:
         # 獲取該用戶的所有訂單
         orders = db.execute(
-            'SELECT order_id, order_date, order_status FROM orders WHERE user_id = ? ORDER BY order_date DESC',
+            'SELECT order_id, order_date, order_status FROM orders WHERE user_id = ? ORDER BY order_id DESC',
             (user_id,)
         ).fetchall()
 

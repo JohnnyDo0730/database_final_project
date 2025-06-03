@@ -90,8 +90,8 @@ function updateBookList(book_list) {
       bookInfo.innerHTML = `
         <h3 class="book-title">${escapeHtml(book.title)}</h3>
         <div class="quantity">
-          <span>數量: </span>
-          <span class="quantity-value">${escapeHtml(book.quantity)}</span>
+          <p><strong>數量:</strong> ${escapeHtml(book.quantity)}</p>
+          <p><strong>庫存:</strong> ${escapeHtml(book.stock)}</p>
         </div>
       `;
       bookBlock.appendChild(bookInfo);

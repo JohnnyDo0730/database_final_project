@@ -68,7 +68,7 @@ def get_cart_content(user_id):
 
     # 使用 JOIN 一次取得 isbn、quantity 與書名 title
     cart_content = db.execute('''
-        SELECT c.isbn, c.quantity, b.title
+        SELECT c.isbn, c.quantity, b.title, b.stock
         FROM purchase_cart c
         JOIN books b ON c.isbn = b.isbn
         WHERE c.user_id = ?
@@ -176,7 +176,10 @@ def get_purchase_orders():
     try:
         # 獲取所有訂單
         orders = db.execute(
-            'SELECT user_id, purchase_id, purchase_date, purchase_status FROM purchases_orders ORDER BY purchase_id DESC',
+            'SELECT po.purchase_id, po.purchase_date, po.purchase_status, u.name '
+            'FROM purchases_orders po '
+            'JOIN users u ON po.user_id = u.user_id '
+            'ORDER BY po.purchase_id DESC',
         ).fetchall()
 
         # 將結果轉換為字典列表
@@ -250,10 +253,11 @@ def get_return_orders(user_name=None):
     try:
         # 獲取退貨中的訂單
         return_orders = db.execute("""
-            SELECT order_id, order_date, order_status, user_id
-            FROM orders
-            WHERE order_status = '退貨中'
-            ORDER BY order_date DESC
+            SELECT o.order_id, o.order_date, o.order_status, u.name
+            FROM orders o
+            JOIN users u ON o.user_id = u.user_id
+            WHERE o.order_status = '退貨中'
+            ORDER BY o.order_id DESC
         """).fetchall()
         
         result = []
@@ -362,7 +366,7 @@ def reject_return(order_id, reason=''):
         
         # 更新訂單狀態為已完成
         db.execute(
-            'UPDATE orders SET order_status = "已完成" WHERE order_id = ?',
+            'UPDATE orders SET order_status = "已送達，不接受退貨" WHERE order_id = ?',
             (order_id,)
         )
         

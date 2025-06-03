@@ -9,8 +9,7 @@
 
 .order-page h1 {
     color: #333;
-    margin-bottom: 30px;
-    text-align: center;
+    margin-bottom: 2rem;
     font-size: 2em;
 }
 
@@ -81,8 +80,6 @@
 .order-info p {
     margin: 8px 0;
     color: #666;
-    display: flex;
-    align-items: center;
 }
 
 .order-info p span {

@@ -1,17 +1,16 @@
 /* 購物車樣式 */
 
 .cart-page {
-    max-width: 1000px;
+    font-family: 'Noto Sans TC', sans-serif;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    font-family: "微軟正黑體", Arial, sans-serif;
 }
 
 .cart-page h1 {
     color: #333;
-    margin-bottom: 25px;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
+    margin-bottom: 2rem;
+    font-size: 2em;
 }
 
 /* 載入指示器 */
@@ -40,13 +39,6 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin-bottom: 30px;
-}
-
-.cart-container h2 {
-    color: #444;
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 20px;
 }
 
 /* 購物車為空提示 */
@@ -91,6 +83,10 @@
 .quantity {
     color: #666;
     font-size: 15px;
+}
+
+.quantity p {
+    margin-bottom: 0.25rem;
 }
 
 .quantity-value {

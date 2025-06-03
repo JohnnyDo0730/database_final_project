@@ -73,13 +73,13 @@ function updateOrderList(order_list) {
     orderBlock.innerHTML = `
       <div class="order-header">
                 <div class="order-info">
-                    <h3>訂單編號: <span class="order-id">${escapeHtml(order.purchase_id)}</span></h3>
-                    <p>申請員工: 編號<span class="user-id">${escapeHtml(order.user_id)}</span></p>
-                    <p>訂單日期: <span class="order-date">${escapeHtml(formatDate(order.purchase_date))}</span></p>
-                    <p>訂單狀態: <span class="order-status">${escapeHtml(translateOrderStatus(order.purchase_status))}</span></p>
+                    <h3>訂單編號:<span class="order-id">${escapeHtml(order.purchase_id)}</span></h3>
+                    <p><strong>申請員工:</strong> ${escapeHtml(order.name)}</p>
+                    <p><strong>訂單日期:</strong> ${escapeHtml(formatDate(order.purchase_date))}</p>
+                    <p><strong>訂單狀態:</strong> ${escapeHtml(translateOrderStatus(order.purchase_status))}</p>
                 </div>
                 <div class="order-total">
-                    <p>訂單總金額: <span class="order-amount">${escapeHtml(order.total_amount.toFixed(2))}</span> 元</p>
+                    <p>訂單總金額：<span class="order-amount">${escapeHtml(order.total_amount.toFixed(2))}</span> 元</p>
                 </div>
             </div>
             <div class="order-items">
