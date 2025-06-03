@@ -2,10 +2,16 @@
 
 /* 書店頁面整體布局 */
 .store-page {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 120px); /* 減去頂部導航欄和padding的高度 */
-    gap: 1rem;
+    font-family: 'Noto Sans TC', sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.store-page h1 {
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 2em;
 }
 
 /* 搜尋區域樣式 */

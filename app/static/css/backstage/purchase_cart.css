@@ -1,17 +1,16 @@
 /* 購物車管理頁面樣式 */
 
 .purchase-cart-page {
-    max-width: 1000px;
+    font-family: 'Noto Sans TC', sans-serif;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    font-family: "微軟正黑體", Arial, sans-serif;
 }
 
 .purchase-cart-page h1 {
     color: #333;
-    margin-bottom: 25px;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
+    margin-bottom: 2rem;
+    font-size: 2em;
 }
 
 /* 載入指示器 */
@@ -91,6 +90,10 @@
 .quantity {
     color: #666;
     font-size: 15px;
+}
+
+.quantity p {
+    margin-bottom: 0.25rem;
 }
 
 .quantity-value {

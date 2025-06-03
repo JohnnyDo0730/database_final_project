@@ -1,6 +1,15 @@
 /* 退貨管理頁面樣式 */
 .return-page {
+    font-family: 'Noto Sans TC', sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
+}
+
+.return-page h1 {
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 2em;
 }
 
 .loading-indicator {
@@ -50,6 +59,11 @@
     margin: 0 0 10px 0;
 }
 
+.return-info p {
+    margin-bottom: 0.25rem;
+    color: #666;
+}
+
 .return-items {
     padding: 15px;
 }
@@ -90,6 +104,24 @@
 }
 
 .confirm-return-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.reject-return-btn {
+    padding: 8px 16px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.reject-return-btn:hover {
+    background-color: #c0392b;
+}
+
+.reject-return-btn:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
 }

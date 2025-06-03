@@ -74,8 +74,8 @@ function updateOrderList(order_list) {
       <div class="order-header">
                 <div class="order-info">
                     <h3>訂單編號: <span class="order-id">${escapeHtml(order.order_id)}</span></h3>
-                    <p>訂單日期: <span class="order-date">${escapeHtml(formatDate(order.order_date))}</span></p>
-                    <p>訂單狀態: <span class="order-status">${escapeHtml(translateOrderStatus(order.order_status))}</span></p>
+                    <p><strong>訂單日期:</strong> ${escapeHtml(formatDate(order.order_date))}</p>
+                    <p><strong>訂單狀態:</strong> ${escapeHtml(translateOrderStatus(order.order_status))}</p>
                 </div>
                 <div class="order-total">
                     <p>訂單總金額: <span class="order-amount">${escapeHtml(order.total_amount.toFixed(2))}</span> 元</p>
@@ -104,7 +104,7 @@ function updateOrderList(order_list) {
                 </table>
             </div>
             <div class="order-actions">
-                <button class="return-btn" data-order-id="${escapeHtml(order.order_id)}" ${order.order_status == '已送達，不接受退貨(超過7天鑑賞期)' || order.order_status == '退貨中' ? 'disabled' : ''}>申請退貨</button>
+                <button class="return-btn" data-order-id="${escapeHtml(order.order_id)}" ${order.order_status.includes('不接受退貨') || order.order_status == '退貨中' || order.order_status == '已退貨' ? 'disabled' : ''}>申請退貨</button>
             </div>
     `;
     //監聽退貨按鈕
