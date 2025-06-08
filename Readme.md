@@ -35,6 +35,7 @@ project/
 ## 🚀 快速開始
 
 ### 補充說明
+
 - 私人檔案(沒有要上傳的)，請放在project_root/self裡面
 - 其他不想上傳的檔案可在.gitignore中新增路徑來自動忽略
 
@@ -49,7 +50,7 @@ project/
 
 ```bash
 git init
-git remote add origin https://github.com/JohnnyDo0730/Image-Inpainting.git
+git remote add origin https://github.com/JohnnyDo0730/database_final_project.git
 git pull origin main
 ```
 
@@ -100,20 +101,22 @@ git push origin feature/some-feature-name
 ```
 
 ---
+
 🌿 分支命名原則
 請依據用途建立分支，建議格式如下：
 
-| 類型 | 命名範例                    | 說明      |
-| -- | ----------------------- | ------- |
-| 功能 | `feature/login-system`  | 新增功能    |
-| 修復 | `fix/login-bug`         | 修正錯誤    |
+
+| 類型 | 命名範例                | 說明           |
+| ---- | ----------------------- | -------------- |
+| 功能 | `feature/login-system`  | 新增功能       |
+| 修復 | `fix/login-bug`         | 修正錯誤       |
 | 重構 | `refactor/db-structure` | 調整架構或重構 |
-| 文件 | `docs/update-readme`    | 修改說明文件  |
-| 測試 | `test/db-connection`    | 測試功能相關  |
+| 文件 | `docs/update-readme`    | 修改說明文件   |
+| 測試 | `test/db-connection`    | 測試功能相關   |
 
 ---
 
- ✏️ Commit 命名建議
+✏️ Commit 命名建議
 
 請用簡潔明確的方式命名 commit 訊息，例如：
 
