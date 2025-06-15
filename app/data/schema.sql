@@ -29,7 +29,7 @@ CREATE TABLE customer (
   user_id INTEGER NOT NULL,
   email TEXT UNIQUE,
   address TEXT,
-  balance REAL NOT NULL DEFAULT 500,
+  balance INTEGER NOT NULL DEFAULT 1000,
   FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
@@ -39,7 +39,7 @@ CREATE TABLE books (
   title TEXT NOT NULL,
   author TEXT NOT NULL,
   publisher TEXT NOT NULL,
-  price REAL NOT NULL,
+  price INTEGER NOT NULL,
   stock INTEGER NOT NULL,
   type TEXT NOT NULL,
   language TEXT NOT NULL,
