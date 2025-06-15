@@ -9,6 +9,7 @@ werkzeug = "==2.3.7"
 click = "==8.1.7"
 flask-cors = "*"
 app = "*"
+requests = "*"
 
 [dev-packages]
 pytest = "==7.4.0"

@@ -79,7 +79,7 @@ function updateOrderList(order_list) {
                     <p><strong>訂單狀態:</strong> ${escapeHtml(translateOrderStatus(order.purchase_status))}</p>
                 </div>
                 <div class="order-total">
-                    <p>訂單總金額：<span class="order-amount">${escapeHtml(order.total_amount.toFixed(2))}</span> 元</p>
+                    <p>訂單總金額：<span class="order-amount">${escapeHtml(order.total_amount)}</span> 元</p>
                 </div>
             </div>
             <div class="order-items">
@@ -97,8 +97,8 @@ function updateOrderList(order_list) {
                         <tr class="order-item">
                             <td class="item-title">${escapeHtml(item.title)}</td>
                             <td class="item-quantity">${escapeHtml(item.quantity)}</td>
-                            <td class="item-price">${escapeHtml(item.price.toFixed(2))} 元</td>
-                            <td class="item-total">${escapeHtml(item.total_price.toFixed(2))} 元</td>
+                            <td class="item-price">${escapeHtml(item.price)} 元</td>
+                            <td class="item-total">${escapeHtml(item.total_price)} 元</td>
                         </tr>
                         `).join('')}
                     </tbody>
