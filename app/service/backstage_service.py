@@ -46,14 +46,14 @@ def add_to_cart(user_id, isbn, quantity):
                 'UPDATE purchase_cart SET quantity = ? WHERE user_id = ? AND isbn = ?',
                 (new_quantity, user_id, isbn)
             )
-            print(f"書籍 ISBN: {isbn} 已存在，數量更新為 {new_quantity}")
+            print(f"書籍 isbn: {isbn} 已存在，數量更新為 {new_quantity}")
         else:
             # 否則插入新項目
             db.execute(
                 'INSERT INTO purchase_cart (user_id, isbn, quantity) VALUES (?, ?, ?)',
                 (user_id, isbn, quantity)
             )
-            print(f"書籍 ISBN: {isbn}, 數量: {quantity} 已加入訂單購物車")
+            print(f"書籍 isbn: {isbn}, 數量: {quantity} 已加入訂單購物車")
 
         db.commit()
     except Exception as e:
@@ -135,6 +135,7 @@ def add_to_purchase_order(user_id, book_list, need_commit=True):
 
         # 建立訂單項目紀錄
         for book in book_list:
+            #print(f"測試型態:{type(book['isbn'])}")
             db.execute(
                 'INSERT INTO po_items (purchase_id, isbn, quantity) VALUES (?, ?, ?)',
                 (order_id, book['isbn'], book['quantity'])
@@ -154,9 +155,9 @@ def remove_from_purchase_cart(user_id, isbn):
     db = get_db()
 
     try:
-        print(f"移除書籍 user_id: {user_id}, ISBN: {isbn}")
+        print(f"移除書籍 user_id: {user_id}, isbn: {isbn}")
         db.execute(
-            'DELETE FROM purchase_cart WHERE user_id = ? AND ISBN = ?',
+            'DELETE FROM purchase_cart WHERE user_id = ? AND isbn = ?',
             (user_id, isbn)
         )
         db.commit()

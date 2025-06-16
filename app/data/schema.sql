@@ -1,9 +1,9 @@
 -- 刪除現有表格（如果存在）
 DROP TABLE IF EXISTS restock;
-DROP TABLE IF EXISTS order_pending;
-DROP TABLE IF EXISTS purchase_pending;
+DROP TABLE IF EXISTS purchase_cart;
 DROP TABLE IF EXISTS po_items;
 DROP TABLE IF EXISTS purchases_orders;
+DROP TABLE IF EXISTS cart;
 DROP TABLE IF EXISTS order_items;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS books;
@@ -35,7 +35,7 @@ CREATE TABLE customer (
 
 -- 創建書籍表
 CREATE TABLE books (
-  ISBN INTEGER PRIMARY KEY,
+  isbn TEXT PRIMARY KEY,
   title TEXT NOT NULL,
   author TEXT NOT NULL,
   publisher TEXT NOT NULL,
@@ -57,17 +57,17 @@ CREATE TABLE orders (
 
 CREATE TABLE order_items (
   order_id INTEGER NOT NULL,
-  ISBN INTEGER NOT NULL,
+  isbn TEXT NOT NULL,
   quantity INTEGER NOT NULL,
   FOREIGN KEY (order_id) REFERENCES orders (order_id),
-  FOREIGN KEY (ISBN) REFERENCES books (ISBN)
+  FOREIGN KEY (isbn) REFERENCES books (isbn)
 );
 
 CREATE TABLE cart (
   user_id INTEGER NOT NULL,
-  isbn INTEGER NOT NULL,
+  isbn TEXT NOT NULL,
   quantity INTEGER NOT NULL,
-  FOREIGN KEY (isbn) REFERENCES books (ISBN),
+  FOREIGN KEY (isbn) REFERENCES books (isbn),
   FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
@@ -82,39 +82,25 @@ CREATE TABLE purchases_orders (
 
 CREATE TABLE po_items (
   purchase_id INTEGER NOT NULL,
-  ISBN INTEGER NOT NULL,
+  isbn TEXT NOT NULL,
   quantity INTEGER NOT NULL,
   FOREIGN KEY (purchase_id) REFERENCES purchases_orders (purchase_id),
-  FOREIGN KEY (ISBN) REFERENCES books (ISBN)
+  FOREIGN KEY (isbn) REFERENCES books (isbn)
 );
 
 CREATE TABLE purchase_cart (
   user_id INTEGER NOT NULL,
-  isbn INTEGER NOT NULL,
+  isbn TEXT NOT NULL,
   quantity INTEGER NOT NULL,
-  FOREIGN KEY (isbn) REFERENCES books (ISBN),
+  FOREIGN KEY (isbn) REFERENCES books (isbn),
   FOREIGN KEY (user_id) REFERENCES users (user_id)
-);
-
--- purchase 待簽收
-CREATE TABLE purchase_pending (
-  purchase_id INTEGER NOT NULL,
-  user_id INTEGER NOT NULL,
-  FOREIGN KEY (purchase_id) REFERENCES purchases_orders (purchase_id),
-  FOREIGN KEY (user_id) REFERENCES users (user_id)
-);
-
--- order 待退貨
-CREATE TABLE order_pending (
-  order_id INTEGER NOT NULL,
-  FOREIGN KEY (order_id) REFERENCES orders (order_id)
 );
 
 -- 補貨
 CREATE TABLE restock (
-  ISBN INTEGER NOT NULL,
+  isbn TEXT NOT NULL,
   quantity INTEGER NOT NULL,
-  FOREIGN KEY (ISBN) REFERENCES books (ISBN)
+  FOREIGN KEY (isbn) REFERENCES books (isbn)
 );
 
 

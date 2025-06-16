@@ -2,4 +2,3 @@ self/
 .env
 .DS_Store
 instance/
-app/data/test_book_api.py

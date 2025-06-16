@@ -145,9 +145,9 @@ function updateBookList(book_list) {
     const bookCover = document.createElement("div");
     bookCover.classList.add("book-cover");
     
-    // 使用書籍的 ISBN 作為圖片的 ID
+    // 使用書籍的 isbn 作為圖片的 ID
     const coverImg = document.createElement("img");
-    coverImg.src = book.cover_url || `/static/images/book_covers/${book.ISBN}.jpg`;
+    coverImg.src = book.cover_url || `/static/images/book_covers/${book.isbn}.jpg`;
     coverImg.alt = `${book.title} 封面`;
     coverImg.onerror = function() {
       // 如果圖片載入失敗，顯示預設圖片
@@ -167,7 +167,7 @@ function updateBookList(book_list) {
     bookInfo.classList.add("book-info");
     bookInfo.innerHTML = `
       <h3 class="book-title">${escapeHtml(book.title)}</h3>
-      <p><strong>ISBN:</strong> ${escapeHtml(book.ISBN)}</p>
+      <p><strong>isbn:</strong> ${escapeHtml(book.isbn)}</p>
       <p><strong>作者:</strong> ${escapeHtml(book.author)}</p>
       <p><strong>出版社:</strong> ${escapeHtml(book.publisher)}</p>
       <p><strong>價格:</strong> $${escapeHtml(book.price)}</p>
@@ -190,7 +190,7 @@ function updateBookList(book_list) {
     bookOrder.innerHTML = `
       <label for="order-quantity">購買數量:</label>
       <input type="number" class="order-quantity" min="1" max="${99}" value="1">
-      <button class="${buttonClass}" data-isbn="${book.ISBN}">${buttonText}</button>
+      <button class="${buttonClass}" data-isbn="${book.isbn}">${buttonText}</button>
     `;
     bookContent.appendChild(bookOrder);
     

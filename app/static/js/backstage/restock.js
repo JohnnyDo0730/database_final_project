@@ -68,12 +68,12 @@ function updateRestockList(restockList) {
         
         restockItem.innerHTML = `
             <div class="restock-info">
-                <p><strong>ISBN:</strong> ${escapeHtml(item.ISBN)}</p>
+                <p><strong>isbn:</strong> ${escapeHtml(item.isbn)}</p>
                 <p><strong>書名:</strong> ${escapeHtml(item.title)}</p>
                 <p><strong>需補貨數量:</strong> ${escapeHtml(item.quantity)}</p>
             </div>
             <div class="restock-actions">
-                <button class="add-to-cart-btn" data-isbn="${escapeHtml(item.ISBN)}">加入購物車</button>
+                <button class="add-to-cart-btn" data-isbn="${escapeHtml(item.isbn)}">加入購物車</button>
             </div>
         `;
         

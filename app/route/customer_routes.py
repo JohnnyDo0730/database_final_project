@@ -69,7 +69,7 @@ def customer_store_content():
 #書籍頁:商品加入購物車
 @customer_bp.route('/customer/store/add_to_cart', methods=['POST'])
 def customer_store_add_to_cart():
-    # 獲取書籍ISBN、數量
+    # 獲取書籍isbn、數量
     isbn = request.json.get('isbn')
     quantity = int(request.json.get('quantity'))
 
@@ -80,7 +80,7 @@ def customer_store_add_to_cart():
         if user_type != 'customer':
             return jsonify({'success': False, 'error': '非顧客用戶'}), 403
         if isbn is None or quantity is None:
-            return jsonify({'success': False, 'error': 'ISBN 或 數量不能為空'}), 400
+            return jsonify({'success': False, 'error': 'isbn 或 數量不能為空'}), 400
 
         # 將書籍加入購物車
         isEnough = add_to_cart(user_id, isbn, quantity)

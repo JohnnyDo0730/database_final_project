@@ -134,7 +134,7 @@ async function sendOrder() {
 
 // 移除書籍
 async function removeFromCart(isbn) {
-    console.log(`移除書籍 ISBN: ${isbn}`);
+    console.log(`移除書籍 isbn: ${isbn}`);
     await fetch(`/backstage/purchase_cart/remove`, {
         method: 'POST',
         headers: {
