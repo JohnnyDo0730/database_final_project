@@ -332,7 +332,7 @@ INSERT INTO restock (ISBN, quantity) VALUES
 (9780090, 15);
 
 -- 插入待退貨訂單數據 (10 筆)
-INSERT INTO order_pending (order_id) VALUES
+INSERT INTO order_return (order_id) VALUES
 (1),
 (2),
 (3),

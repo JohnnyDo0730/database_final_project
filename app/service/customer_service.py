@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 def update_book_restock(isbn, need_commit=True):
     db = get_db()
     book_stock = db.execute(
-        'SELECT stock FROM books WHERE ISBN = ?',
+        'SELECT stock FROM books WHERE isbn = ?',
         (isbn,)
     ).fetchone()
 
@@ -29,24 +29,24 @@ def update_book_restock(isbn, need_commit=True):
     if not isEnough:
         # 庫存不足，加入補貨清單
         db.execute(
-            'INSERT INTO restock (ISBN, quantity) VALUES (?, ?)',
+            'INSERT INTO restock (isbn, quantity) VALUES (?, ?)',
             (isbn, book_required[0] - book_stock[0])
         )
-        print(f"書籍 ISBN: {isbn} 庫存不足，已加入補貨清單")
+        print(f"書籍 isbn: {isbn} 庫存不足，已加入補貨清單")
     else:
         # 庫存足夠，檢查是否需要取消補貨
         has_restock = db.execute(
-            'SELECT * FROM restock WHERE ISBN = ?',
+            'SELECT * FROM restock WHERE isbn = ?',
             (isbn,)
         ).fetchone()
 
         # 如果為取消預定後庫存足夠，則從補貨清單中刪除
         if has_restock:
             db.execute(
-                'DELETE FROM restock WHERE ISBN = ?',
+                'DELETE FROM restock WHERE isbn = ?',
                 (isbn,)
             )
-            print(f"書籍 ISBN: {isbn} 已取消預定，已從補貨清單中刪除")
+            print(f"書籍 isbn: {isbn} 已取消預定，已從補貨清單中刪除")
 
     if need_commit:
         db.commit()
@@ -97,14 +97,14 @@ def add_to_cart(user_id, isbn, quantity):
                 'UPDATE cart SET quantity = ? WHERE user_id = ? AND isbn = ?',
                 (new_quantity, user_id, isbn)
             )
-            print(f"書籍 ISBN: {isbn} 已存在，數量更新為 {new_quantity}")
+            print(f"書籍 isbn: {isbn} 已存在，數量更新為 {new_quantity}")
         else:
             # 否則插入新項目
             db.execute(
                 'INSERT INTO cart (user_id, isbn, quantity) VALUES (?, ?, ?)',
                 (user_id, isbn, quantity)
             )
-            print(f"書籍 ISBN: {isbn}, 數量: {quantity} 已加入購物車")
+            print(f"書籍 isbn: {isbn}, 數量: {quantity} 已加入購物車")
 
         # 更新補貨清單
         isEnough = update_book_restock(isbn,need_commit=False)
@@ -149,7 +149,7 @@ def send_order(user_id):
             book_list = db.execute('''
                 SELECT c.isbn, c.quantity, b.stock, b.price
                 FROM cart c 
-                JOIN books b ON c.isbn = b.ISBN 
+                JOIN books b ON c.isbn = b.isbn 
                 WHERE c.user_id = ? AND c.quantity <= b.stock
             ''', (user_id,)).fetchall()
 
@@ -239,7 +239,7 @@ def remove_from_cart(user_id, isbn):
     db = get_db()
 
     try:
-        print(f"移除書籍 user_id: {user_id}, ISBN: {isbn}")
+        print(f"移除書籍 user_id: {user_id}, isbn: {isbn}")
         db.execute(
             'DELETE FROM cart WHERE user_id = ? AND isbn = ?',
             (user_id, isbn)
@@ -290,9 +290,9 @@ def get_user_orders(user_id):
 
             # 獲取該訂單的所有項目
             order_items = db.execute(
-                'SELECT oi.ISBN, oi.quantity, b.title, b.price ' 
+                'SELECT oi.isbn, oi.quantity, b.title, b.price ' 
                 'FROM order_items oi '
-                'JOIN books b ON oi.ISBN = b.ISBN '
+                'JOIN books b ON oi.isbn = b.isbn '
                 'WHERE oi.order_id = ?',
                 (order_dict['order_id'],)
             ).fetchall()

@@ -147,7 +147,7 @@ function updateBookList(book_list) {
     bookInfo.classList.add("book-info");
     bookInfo.innerHTML = `
       <h3 class="book-title">${escapeHtml(book.title)}</h3>
-      <p><strong>ISBN:</strong> ${escapeHtml(book.ISBN)}</p>
+      <p><strong>isbn:</strong> ${escapeHtml(book.isbn)}</p>
       <p><strong>作者:</strong> ${escapeHtml(book.author)}</p>
       <p><strong>出版社:</strong> ${escapeHtml(book.publisher)}</p>
       <p><strong>價格:</strong> ${escapeHtml(book.price)}</p>
@@ -163,7 +163,7 @@ function updateBookList(book_list) {
     bookOrder.innerHTML = `
       <label for="order-quantity">訂購數量:</label>
       <input type="number" class="order-quantity" min="1" value="1">
-      <button class="order-btn" data-isbn="${escapeHtml(book.ISBN)}">加入購物車</button>
+      <button class="order-btn" data-isbn="${escapeHtml(book.isbn)}">加入購物車</button>
     `;
     bookBlock.appendChild(bookOrder);
 
@@ -172,7 +172,7 @@ function updateBookList(book_list) {
       if (orderBtn) {
         const isbn = orderBtn.dataset.isbn;
         const quantity = orderBtn.closest(".book-order").querySelector(".order-quantity").value;
-        console.log(`下訂書籍 ISBN: ${isbn}, 數量: ${quantity}`);
+        console.log(`下訂書籍 isbn: ${isbn}, 數量: ${quantity}`);
 
         // 呼叫訂購函數(未實現)
         addToCart(isbn, quantity);

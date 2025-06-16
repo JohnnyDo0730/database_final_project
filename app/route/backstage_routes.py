@@ -57,7 +57,7 @@ def backstage_book_content():
 #書籍頁:加入購物車
 @backstage_bp.route('/backstage/book/add_to_cart', methods=['POST'])
 def backstage_book_add_to_cart():
-    # 獲取書籍ISBN、數量
+    # 獲取書籍isbn、數量
     isbn = request.json.get('isbn')
     quantity = int(request.json.get('quantity'))
 
@@ -68,7 +68,7 @@ def backstage_book_add_to_cart():
             return jsonify({'error': '非後台用戶'}), 403
 
         if isbn is None or quantity is None:
-            return jsonify({'error': 'ISBN 或 數量不能為空'}), 400
+            return jsonify({'error': 'isbn 或 數量不能為空'}), 400
 
         # 將書籍加入購物車
         add_to_cart(user_id, isbn, quantity)

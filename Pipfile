@@ -10,6 +10,7 @@ click = "==8.1.7"
 flask-cors = "*"
 app = "*"
 requests = "*"
+python-dateutil = "*"
 
 [dev-packages]
 pytest = "==7.4.0"
