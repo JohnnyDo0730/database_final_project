@@ -15,6 +15,13 @@ def get_book_list(search_keyword, page, items_per_page=10):
         return []
     else: # 如果 books 不為空，則將 books 轉換為字典列表
         books_list = [dict(row) for row in books]
+
+        for book in books_list:
+            #將type以逗號分隔只取前三
+            types = book['type'].split(',')
+            if len(types) >=3 :
+                book['type'] = ', '.join(types[:3]) # 只取前三項
+
         return books_list
 
 
@@ -394,6 +401,7 @@ def get_restock_list():
 def add_to_purchase_cart_restock(isbn):
     db = get_db()
     try:
+        user_id = session.get('user_id')
         # 檢查是否在補貨清單
         restock_list = db.execute(
             'SELECT isbn, quantity FROM restock WHERE isbn = ?',
@@ -404,11 +412,10 @@ def add_to_purchase_cart_restock(isbn):
 
         # 先檢查是否已有這本書在購物車
         existing = db.execute(
-            'SELECT quantity FROM purchase_cart WHERE isbn = ?',
-            (isbn,)
+            'SELECT quantity FROM purchase_cart WHERE isbn = ? AND user_id = ?',
+            (isbn, user_id)
         ).fetchone()
         
-        user_id = session.get('user_id')
         if existing:
             # 如果已存在，則更新數量
             db.execute(

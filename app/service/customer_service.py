@@ -27,12 +27,15 @@ def update_book_restock(isbn, need_commit=True):
 
     isEnough = book_required[0] <= book_stock[0] + book_purchasing[0]
     if not isEnough:
-        # 庫存不足，加入補貨清單
+        # 先刪除該 ISBN 的舊補貨記錄
+        db.execute('DELETE FROM restock WHERE isbn = ?', (isbn,))
+        
+        # 庫存不足，加入新的補貨清單
         db.execute(
             'INSERT INTO restock (isbn, quantity) VALUES (?, ?)',
             (isbn, book_required[0] - book_stock[0])
         )
-        print(f"書籍 isbn: {isbn} 庫存不足，已加入補貨清單")
+        print(f"書籍 isbn: {isbn} 庫存不足，已更新補貨清單")
     else:
         # 庫存足夠，檢查是否需要取消補貨
         has_restock = db.execute(
@@ -65,6 +68,13 @@ def get_book_list(search_keyword, page, items_per_page=12):
         return []
     else: # 如果 books 不為空，則將 books 轉換為字典列表
         books_list = [dict(row) for row in books]
+
+        for book in books_list:
+            #將type以逗號分隔只取前三
+            types = book['type'].split(',')
+            if len(types) >=3 :
+                book['type'] = ', '.join(types[:3]) # 只取前三項
+                
         return books_list
 
 
