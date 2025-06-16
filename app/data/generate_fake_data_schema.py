@@ -132,7 +132,9 @@ def generate_fake_po_items_sql(
     entries = []
     for purchase_id in range(1, purchase_count + 1):
         book_count = random.randint(1, 3)
-        chosen_isbns = random.sample(isbns, min(book_count, len(isbns)))
+        chosen_isbns = None
+        while chosen_isbns is None or '9780312152130' in chosen_isbns:  # 測試補貨用，跳過
+            chosen_isbns = random.sample(isbns, min(book_count, len(isbns)))
         for isbn in chosen_isbns:
             quantity = random.randint(10, 50)
             entries.append(f"({purchase_id}, '{isbn}', {quantity})")

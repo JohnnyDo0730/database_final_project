@@ -8,7 +8,7 @@ INSERT INTO books (isbn, title, author, publisher, price, stock, type, language,
                                 'Microcomputers -- Maintenance and repair, Microcomputers -- Equipment and supplies, Microcomputers -- Upgrading', 'eng', '2005-06-16');
 INSERT INTO books (isbn, title, author, publisher, price, stock, type, language, publish_date)
                         VALUES ('9780312152130', 'The Sports Encyclopedia', 'David S. Neft, Richard M. Cohen - undifferentiated',
-                                'St Martins Pr', 293, 7,
+                                'St Martins Pr', 293, 0,
                                 'Baseball, Sports & Recreation, Sports, Baseball - General, Reference, Statistics, United States', 'eng', '1997-02-16');
 INSERT INTO books (isbn, title, author, publisher, price, stock, type, language, publish_date)
                         VALUES ('9780748725144', 'Essential Maths', 'Sean McArdle',
@@ -113,7 +113,7 @@ INSERT INTO books (isbn, title, author, publisher, price, stock, type, language,
 INSERT INTO books (isbn, title, author, publisher, price, stock, type, language, publish_date)
                         VALUES ('9780894711350', 'Gray''s Anatomy', 'Henry Gray F.R.S., T. Pickering Pick',
                                 'Running Press Book Publishers', 508, 15,
-                                'Family & Health, Anatomy, Human, Sale Adult - Diet / Personal Health / Exercise, Anatomy, Reference, Sale Books', 'eng', '0000-01-01');
+                                'Family & Health, Anatomy, Human, Sale Adult - Diet / Personal Health / Exercise, Anatomy, Reference, Sale Books', 'eng', '1991-01-01');
 INSERT INTO books (isbn, title, author, publisher, price, stock, type, language, publish_date)
                         VALUES ('9780061127922', 'Democracy in America (Harper Perennial Modern Classics)', 'Alexis de Tocqueville',
                                 'Harper Perennial Modern Classics', 713, 16,

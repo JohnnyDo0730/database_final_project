@@ -174,7 +174,7 @@ function updateBookList(book_list) {
       <p><strong>庫存:</strong> ${escapeHtml(book.stock)}</p>
       <p><strong>類型:</strong> ${escapeHtml(book.type)}</p>
       <p><strong>語言:</strong> ${escapeHtml(book.language)}</p>
-      <p><strong>出版日期:</strong> ${escapeHtml(book.publish_date)}</p>
+      <p><strong>出版日期:</strong> ${escapeHtml(book.publish_date ? new Date(book.publish_date).toISOString().split('T')[0] : '未知')}</p>
     `;
     bookContent.appendChild(bookInfo);
 
